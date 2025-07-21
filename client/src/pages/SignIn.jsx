@@ -16,7 +16,6 @@ export const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(form);
       const res = await signin(form);
       localStorage.setItem("token", res.data.token);
       window.location.href = "/";
@@ -87,6 +86,12 @@ export const SignIn = () => {
               />
             </button>
           </div>
+          <p>
+            Don't have an account?{" "}
+            <a href="/signup" className="font-bold underline">
+              Sign Up
+            </a>
+          </p>
         </div>
       </div>
 

@@ -7,6 +7,7 @@ export const InputWithLabel = ({ type, label, name, id, value, onChange }) => (
       value={value}
       onChange={onChange}
       className="border border-gray-400 px-4 py-2 rounded w-full"
+      autoComplete="off"
     />
     <label
       htmlFor={id}
