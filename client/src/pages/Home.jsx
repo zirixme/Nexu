@@ -28,9 +28,9 @@ export const Home = () => {
   if (error) return <p className="text-red-600">{error}</p>;
   if (!posts.length) return <p>No posts available.</p>;
   return (
-    <div className="max-w-2xl mx-auto p-4">
+    <div className="p-4 flex flex-col max-w-md md:max-w-2xl xl:max-w-3xl w-full justify-center">
       {posts.map((post) => (
-        <div key={post.id} className="mb-6 border p-4 rounded shadow">
+        <div key={post.id} className="mb-6 p-4 border-b border-gray-400">
           <div className="flex items-center gap-4 mb-2">
             <img
               src={post.user.avatar_url || "/default-avatar.png"}
@@ -39,14 +39,16 @@ export const Home = () => {
             />
             <p className="font-semibold">{post.user.username}</p>
           </div>
-          {post.text && <p className="mb-2">{post.text}</p>}
           {post.image_url && (
-            <img
-              src={post.image_url}
-              alt="Post image"
-              className="max-h-60 w-full object-contain"
-            />
+            <div className="mb-2 w-full aspect-square">
+              <img
+                src={post.image_url}
+                alt="Post image"
+                className="w-full h-full object-cover"
+              />
+            </div>
           )}
+          {post.text && <p className="mb-2">{post.text}</p>}
           <p className="text-gray-400 text-sm">
             {new Date(post.created_at).toLocaleString()}
           </p>
