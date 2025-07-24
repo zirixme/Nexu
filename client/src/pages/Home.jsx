@@ -1,5 +1,25 @@
 import { useEffect, useState } from "react";
 import { getPosts } from "../api/auth.js";
+import { MessageCircle, Heart } from "lucide-react";
+
+const getRelativeTime = (date) => {
+  const now = new Date();
+  const diff = now - new Date(date);
+
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(diff / (1000 * 60));
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
+  const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+
+  if (years > 0) return `${years}y`;
+  if (months > 0) return `${months}mo`;
+  if (days > 0) return `${days}d`;
+  if (hours > 0) return `${hours}h`;
+  if (minutes > 0) return `${minutes}m`;
+  return `${seconds}s`;
+};
 
 export const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -30,7 +50,7 @@ export const Home = () => {
   return (
     <div className="p-4 flex flex-col max-w-md md:max-w-2xl xl:max-w-3xl w-full justify-center">
       {posts.map((post) => (
-        <div key={post.id} className="mb-6 p-4 border-b border-gray-400">
+        <div key={post.id} className="mb-6  border-b border-gray-400 space-y-2">
           <div className="flex items-center gap-4 mb-2">
             <img
               src={post.user.avatar_url || "/default-avatar.png"}
@@ -38,9 +58,13 @@ export const Home = () => {
               className="w-10 h-10 rounded-full object-cover"
             />
             <p className="font-semibold">{post.user.username}</p>
+            <p className="text-gray-400 text-sm">
+              {"· " + getRelativeTime(post.created_at)}
+            </p>
           </div>
+
           {post.image_url && (
-            <div className="mb-2 w-full aspect-square">
+            <div className="mb-4 w-full aspect-square">
               <img
                 src={post.image_url}
                 alt="Post image"
@@ -48,10 +72,22 @@ export const Home = () => {
               />
             </div>
           )}
-          {post.text && <p className="mb-2">{post.text}</p>}
-          <p className="text-gray-400 text-sm">
-            {new Date(post.created_at).toLocaleString()}
-          </p>
+          <div className="space-x-2 w-full flex">
+            <button className="flex gap-2">
+              <Heart />
+              {post._count.likes}
+            </button>
+            <button className="flex gap-2">
+              <MessageCircle />
+              {post._count.comments}
+            </button>
+          </div>
+          {post.user.username && (
+            <div className="flex gap-4 mb-4">
+              <p className="font-bold">{post.user.username}</p>
+              <p>{post.text}</p>
+            </div>
+          )}
         </div>
       ))}
     </div>

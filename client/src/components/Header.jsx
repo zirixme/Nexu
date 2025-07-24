@@ -16,7 +16,7 @@ import { useLocation } from "react-router";
 export const Header = () => {
   const location = useLocation();
   return (
-    <nav className="fixed bottom-0 md:top-0 w-full md:w-fit px-4 py-2 border md:px-6 md:py-4 border-gray-400 bg-gray-50">
+    <nav className="fixed bottom-0 md:top-0 w-full md:w-fit px-4 py-2 border md:px-6 md:py-6 border-gray-400 bg-gray-50">
       <ul className="flex justify-between md:flex-col md:gap-7">
         <li>
           <a href="/" className="flex items-center gap-2">
