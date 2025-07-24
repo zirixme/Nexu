@@ -32,6 +32,9 @@ export const getPosts = async (req, res) => {
         user: {
           select: { id: true, username: true, avatar_url: true },
         },
+        _count: {
+          select: { likes: true, comments: true },
+        },
       },
     });
     res.json(posts);
