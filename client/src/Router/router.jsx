@@ -20,10 +20,10 @@ let router = createBrowserRouter([
     ),
     children: [
       { path: "", element: <Home /> },
-      { path: "/search", element: <Search /> },
-      { path: "/create", element: <Create /> },
-      { path: "/messages", element: <Messages /> },
-      { path: "/profile", element: <Profile /> },
+      { path: "search", element: <Search /> },
+      { path: "create", element: <Create /> },
+      { path: "messages", element: <Messages /> },
+      { path: "profile", element: <Profile /> },
     ],
   },
   {

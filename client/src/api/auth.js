@@ -12,6 +12,17 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/signin";
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Auth
 export const signin = (data) => API.post("/auth/signin", data);
 export const signup = (data) => API.post("/auth/signup", data);
