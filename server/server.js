@@ -5,7 +5,8 @@ import cors from "cors";
 
 // routes imports //
 import authRoutes from "./routes/authRoutes.js";
-import PostsRoutes from "./routes/postsRoutes.js";
+import postsRoutes from "./routes/postsRoutes.js";
+import usersRoutes from "./routes/usersRoutes.js";
 
 const app = express();
 
@@ -20,7 +21,8 @@ app.use(
 );
 // routes
 app.use("/api/auth", authRoutes);
-app.use("/api/posts", PostsRoutes);
+app.use("/api/posts", postsRoutes);
+app.use("/api/u", usersRoutes);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on port ${process.env.PORT || 3000}.`);
