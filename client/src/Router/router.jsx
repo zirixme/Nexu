@@ -23,7 +23,7 @@ let router = createBrowserRouter([
       { path: "search", element: <Search /> },
       { path: "create", element: <Create /> },
       { path: "messages", element: <Messages /> },
-      { path: "profile", element: <Profile /> },
+      { path: "/profile/:id", element: <Profile /> },
     ],
   },
   {
