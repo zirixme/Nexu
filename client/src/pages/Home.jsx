@@ -52,12 +52,17 @@ export const Home = () => {
       {posts.map((post) => (
         <div key={post.id} className="mb-6  border-b border-gray-400 space-y-2">
           <div className="flex items-center gap-4 mb-2">
-            <img
-              src={post.user.avatar_url || "/default-avatar.png"}
-              alt={post.user.username}
-              className="w-10 h-10 rounded-full object-cover"
-            />
-            <p className="font-semibold">{post.user.username}</p>
+            <a
+              href={`/profile/${post.user.id}`}
+              className="flex items-center gap-2"
+            >
+              <img
+                src={post.user.avatar_url || "/default-avatar.png"}
+                alt={post.user.username}
+                className="w-10 h-10 rounded-full object-cover"
+              />
+              <p className="font-semibold">{post.user.username}</p>
+            </a>
             <p className="text-gray-400 text-sm">
               {"· " + getRelativeTime(post.created_at)}
             </p>
