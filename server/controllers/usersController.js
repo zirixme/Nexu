@@ -37,7 +37,7 @@ export const searchUsers = async (req, res) => {
           mode: "insensitive",
         },
       },
-      select: { id: true, username: true, avatar_url: true },
+      select: { id: true, username: true, avatar_url: true, followers: true },
     });
     res.json(users);
   } catch (error) {
