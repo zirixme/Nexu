@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { InputWithLabel } from "../components/InputWithLabel.jsx";
 import { searchUsers } from "../api/auth.js";
+import { formatNumber } from "../utils/utils.js";
 
 export const Search = () => {
   const [query, setQuery] = useState("");
@@ -43,8 +44,17 @@ export const Search = () => {
       {error && <p className="text-red-500">{error}</p>}
       <ul className="w-full">
         {result.map((user) => (
-          <li key={user.id} className="border-b p-2">
+          <li key={user.id} className="p-2 flex items-center gap-4">
+            <img
+              src={user.avatar_url}
+              alt={user.username + "Profile pic"}
+              className="w-8 h-8 rounded-full md:w-11 md:h-11 xl:w-12 xl:h-12"
+            />
             <a href={`/profile/${user.id}`}>{user.username}</a>
+            <p className="text-gray-400">
+              {formatNumber(user.followers.length)} {""}
+              {user.followers.length === 1 ? "follower" : "followers"}
+            </p>
           </li>
         ))}
       </ul>
