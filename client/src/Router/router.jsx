@@ -9,7 +9,7 @@ import { Search } from "../pages/Search.jsx";
 import { Create } from "../pages/Create.jsx";
 import { Messages } from "../pages/Messages.jsx";
 import { Profile } from "../pages/Profile.jsx";
-
+import { Signout } from "../pages/Signout.jsx";
 let router = createBrowserRouter([
   {
     path: "/",
@@ -33,6 +33,10 @@ let router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />,
+  },
+  {
+    path: "/signout",
+    element: <Signout />,
   },
 ]);
 

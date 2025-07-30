@@ -4,6 +4,7 @@ import {
   CirclePlus,
   MessageSquare,
   UserRound,
+  LogOut,
 } from "lucide-react";
 import HomeSelected from "../assets/lucide/house.svg";
 import SearchSelected from "../assets/lucide/user-search.svg";
@@ -64,13 +65,21 @@ export const Header = () => {
             </a>
           </li>
           <li>
-            <a href="/profile" className="flex items-center gap-2">
-              {location.pathname === "/profile" ? (
+            <a
+              href={`/profile/${localStorage.getItem("userId")}`}
+              className="flex items-center gap-2"
+            >
+              {location.pathname.startsWith === "/profile" ? (
                 <img src={ProfileSelected} alt="create icon" />
               ) : (
                 <UserRound />
               )}
               <span className="hidden xl:inline">Profile</span>
+            </a>
+          </li>
+          <li className="hidden md:inline">
+            <a href="/signout">
+              <LogOut />
             </a>
           </li>
         </ul>
