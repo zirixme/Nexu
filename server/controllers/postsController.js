@@ -17,7 +17,7 @@ export const createPost = async (req, res) => {
         image_url,
       },
     });
-    res.status(401).json(newPost);
+    res.status(201).json(newPost);
   } catch (error) {
     console.error("createPost error:", error);
     res.status(500).json({ message: "Server error" });
