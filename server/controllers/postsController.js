@@ -104,3 +104,77 @@ export const updatePost = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const likePost = async (req, res) => {
+  const userId = req.user.id;
+  const { postId } = req.params;
+
+  try {
+    const existing = await prisma.findUnique({
+      where: { user_id_post_id: { user_id: userId, post_id: postId } },
+    });
+
+    if (existing) {
+      return res.status(400).json({ message: "Already liked" });
+    }
+
+    const like = await prisma.like.create({
+      data: { user_id: userId, post_id: postId },
+    });
+    res.json(like);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const unlikePost = async (req, res) => {
+  const userId = req.user.id;
+  const { postId } = req.params;
+
+  try {
+    await prisma.like.delete({
+      where: { user_id_post_id: { user_id: userId, post_id: postId } },
+    });
+    res.json({ message: "Unliked" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const addComment = async (req, res) => {
+  const userId = req.user.id;
+  const { postId } = req.params;
+  const { text } = req.body;
+
+  if (!text || text.trim().length === 0) {
+    return res.status(400).json({ message: "Comment text is required" });
+  }
+
+  try {
+    const comment = await prisma.comment.create({
+      data: { user_id: userId, post_id: postId, text },
+    });
+    res.json(comment);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getComments = async (req, res) => {
+  const { postId } = req.params;
+
+  try {
+    const comments = await prisma.comment.findMany({
+      where: { post_id: postId },
+      orderBy: { created_at: "desc" },
+      include: { user: true },
+    });
+    res.json(comments);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
