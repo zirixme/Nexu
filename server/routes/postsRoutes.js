@@ -5,8 +5,7 @@ import {
   getPosts,
   deletePost,
   updatePost,
-  likePost,
-  unlikePost,
+  toggleLike,
   addComment,
   getComments,
 } from "../controllers/postsController.js";
@@ -23,8 +22,7 @@ router.delete("/:id", deletePost);
 
 router.patch("/:id", updatePost);
 
-router.post("/:postId/like", likePost);
-router.delete("/:postId/like", unlikePost);
+router.post("/:postId/like", toggleLike);
 
 router.post("/:postId/comments", addComment);
 router.get("/:postId/comments", getComments);

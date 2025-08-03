@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getPosts } from "../api/auth.js";
-import { MessageCircle, Heart } from "lucide-react";
-
+import { MessageCircle, Heart, PersonStanding } from "lucide-react";
+import { LikeButton } from "../components/LikeButton.jsx";
 const getRelativeTime = (date) => {
   const now = new Date();
   const diff = now - new Date(date);
@@ -25,6 +25,20 @@ export const Home = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const handleToggleLike = (postId, liked, likesCount) => {
+    setPosts((posts) =>
+      posts.map((post) =>
+        post.id === postId
+          ? {
+              ...post,
+              likedByCurrentUser: liked,
+              _count: { ...post._count, likes: likesCount },
+            }
+          : post
+      )
+    );
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -78,10 +92,12 @@ export const Home = () => {
             </div>
           )}
           <div className="space-x-2 w-full flex">
-            <button className="flex gap-2">
-              <Heart />
-              {post._count.likes}
-            </button>
+            <LikeButton
+              postId={post.id}
+              initialLiked={post.likedByCurrentUser}
+              initialLikesCount={post._count.likes}
+              onToggleLike={handleToggleLike}
+            />
             <button className="flex gap-2">
               <MessageCircle />
               {post._count.comments}

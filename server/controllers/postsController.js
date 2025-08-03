@@ -26,6 +26,7 @@ export const createPost = async (req, res) => {
 
 export const getPosts = async (req, res) => {
   try {
+    const userId = req.user?.id;
     const posts = await prisma.post.findMany({
       orderBy: { created_at: "desc" },
       include: {
@@ -35,6 +36,12 @@ export const getPosts = async (req, res) => {
         _count: {
           select: { likes: true, comments: true },
         },
+        likes: userId
+          ? {
+              where: { user_id: userId },
+              select: { id: true },
+            }
+          : false,
       },
     });
     res.json(posts);
@@ -105,41 +112,43 @@ export const updatePost = async (req, res) => {
   }
 };
 
-export const likePost = async (req, res) => {
+export const toggleLike = async (req, res) => {
   const userId = req.user.id;
-  const { postId } = req.params;
+  const postId = req.params.postId;
 
   try {
-    const existing = await prisma.findUnique({
-      where: { user_id_post_id: { user_id: userId, post_id: postId } },
+    const existingLike = await prisma.like.findUnique({
+      where: {
+        user_id_post_id: {
+          user_id: userId,
+          post_id: postId,
+        },
+      },
     });
 
-    if (existing) {
-      return res.status(400).json({ message: "Already liked" });
+    if (existingLike) {
+      await prisma.like.delete({
+        where: { id: existingLike.id },
+      });
+    } else {
+      await prisma.like.create({
+        data: {
+          post_id: postId,
+          user_id: userId,
+        },
+      });
     }
-
-    const like = await prisma.like.create({
-      data: { user_id: userId, post_id: postId },
+    const likesCount = await prisma.like.count({
+      where: { post_id: postId },
     });
-    res.json(like);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
 
-export const unlikePost = async (req, res) => {
-  const userId = req.user.id;
-  const { postId } = req.params;
-
-  try {
-    await prisma.like.delete({
-      where: { user_id_post_id: { user_id: userId, post_id: postId } },
+    res.json({
+      liked: !existingLike,
+      likesCount,
     });
-    res.json({ message: "Unliked" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    console.error("Toggle like error:", error);
+    res.status(500).json({ message: "Something went wrong." });
   }
 };
 
