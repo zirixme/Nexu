@@ -39,3 +39,6 @@ export const getUser = (id) => API.get(`/u/${id}`);
 
 // Likes
 export const toggleLikeApi = (id) => API.post(`/posts/${id}/like`);
+
+// Comments
+export const getComments = (id) => API.get(`posts/${id}/comments`);

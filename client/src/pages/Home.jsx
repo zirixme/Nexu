@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getPosts } from "../api/auth.js";
 import { MessageCircle, Heart, PersonStanding } from "lucide-react";
+import { Comments } from "../components/Comments.jsx";
 import { LikeButton } from "../components/LikeButton.jsx";
 const getRelativeTime = (date) => {
   const now = new Date();
@@ -25,6 +26,7 @@ export const Home = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [activeCommentsPostId, setActiveCommentsPostId] = useState(null);
 
   const handleToggleLike = (postId, liked, likesCount) => {
     setPosts((posts) =>
@@ -98,10 +100,19 @@ export const Home = () => {
               initialLikesCount={post._count.likes}
               onToggleLike={handleToggleLike}
             />
-            <button className="flex gap-2">
+            <button
+              className="flex gap-2"
+              onClick={() => setActiveCommentsPostId(post.id)}
+            >
               <MessageCircle />
               {post._count.comments}
             </button>
+            {activeCommentsPostId === post.id && (
+              <Comments
+                id={post.id}
+                onClose={() => setActiveCommentsPostId(null)}
+              />
+            )}
           </div>
           {post.user.username && (
             <div className="flex gap-4 mb-4">

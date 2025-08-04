@@ -175,6 +175,10 @@ export const addComment = async (req, res) => {
 export const getComments = async (req, res) => {
   const { postId } = req.params;
 
+  if (!postId) {
+    return res.status(400).json({ message: "Post ID is required" });
+  }
+
   try {
     const comments = await prisma.comment.findMany({
       where: { post_id: postId },
@@ -183,7 +187,7 @@ export const getComments = async (req, res) => {
     });
     res.json(comments);
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching comments:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
