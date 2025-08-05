@@ -42,3 +42,5 @@ export const toggleLikeApi = (id) => API.post(`/posts/${id}/like`);
 
 // Comments
 export const getComments = (id) => API.get(`posts/${id}/comments`);
+export const postComment = (id, text) =>
+  API.post(`posts/${id}/comments`, { text });

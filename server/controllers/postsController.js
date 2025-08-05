@@ -164,6 +164,11 @@ export const addComment = async (req, res) => {
   try {
     const comment = await prisma.comment.create({
       data: { user_id: userId, post_id: postId, text },
+      include: {
+        user: {
+          select: { username: true, avatar_url: true },
+        },
+      },
     });
     res.json(comment);
   } catch (error) {
