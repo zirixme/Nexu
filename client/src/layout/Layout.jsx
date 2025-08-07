@@ -3,9 +3,9 @@ import { Header } from "../components/Header.jsx";
 
 export const Layout = () => {
   return (
-    <div className="h-screen flex bg-gray-50">
+    <div className="h-screen bg-gray-50">
       <Header />
-      <main className="w-full flex items-baseline justify-center py-6 px-20">
+      <main className="md:ml-20 flex justify-center xl:px-20">
         <Outlet />
       </main>
     </div>

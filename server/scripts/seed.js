@@ -41,6 +41,13 @@ async function main() {
       image_url: "https://picsum.photos/seed/post2/400/300",
     },
   });
+  const post3 = await prisma.post.create({
+    data: {
+      user_id: user2.id,
+      text: "Bob’s first post!",
+      image_url: "https://picsum.photos/seed/post2/400/300",
+    },
+  });
 
   // Create comments
   await prisma.comment.create({

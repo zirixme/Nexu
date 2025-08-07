@@ -32,7 +32,11 @@ export const LikeButton = ({
   };
 
   return (
-    <button className="flex gap-2" onClick={toggleLike} disabled={loading}>
+    <button
+      className="flex gap-2 w-12 hover:cursor-pointer"
+      onClick={toggleLike}
+      disabled={loading}
+    >
       <Heart fill={liked ? "red" : "none"} stroke={liked ? "red" : "black"} />
       {likeCount}
     </button>

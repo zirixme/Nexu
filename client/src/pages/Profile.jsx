@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { getUser } from "../api/auth.js";
-
+import { Edit } from "lucide-react";
 export const Profile = () => {
   const { id } = useParams();
   const [user, setUser] = useState(null);
@@ -29,9 +29,54 @@ export const Profile = () => {
   if (!user) return <p>No user data</p>;
 
   return (
-    <div className="max-w-xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">{user.username}</h1>
-      <p>Bio: {user.bio}</p>
+    <div className="w-full p-4 md:p-6">
+      {/* Profile Info */}
+      <div className="flex justify-between items-start border-b border-gray-400 pb-4">
+        <div className="space-y-2">
+          <img
+            src={user.avatar_url}
+            alt={`${user.username} profile pic`}
+            className="w-20 h-20 rounded-full md:w-24 md:h-24"
+          />
+          <h1 className="font-bold text-xl">{user.username}</h1>
+          <p>{user.bio}</p>
+          <div className="flex gap-4">
+            <p>
+              {user.followers.length}{" "}
+              <span className="text-gray-400">followers</span>
+            </p>
+            <p>
+              {user.following.length}{" "}
+              <span className="text-gray-400">following</span>
+            </p>
+          </div>
+        </div>
+        <button className="hover:cursor-pointer">
+          <Edit />
+        </button>
+      </div>
+
+      {/* User's Posts */}
+      <div className="mt-6">
+        {user.posts?.length ? (
+          <div className="grid grid-cols-3 gap-2 md:gap-4">
+            {user.posts.map((post) => (
+              <div
+                key={post.id}
+                className="aspect-square overflow-hidden rounded bg-gray-100 hover:opacity-90 cursor-pointer"
+              >
+                <img
+                  src={post.image_url || "/fallback.jpg"}
+                  alt={`Post by ${user.username}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No posts yet.</p>
+        )}
+      </div>
     </div>
   );
 };
