@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { getUser } from "../api/auth.js";
 import { Edit } from "lucide-react";
+import { EditProfile } from "../components/EditProfile.jsx";
 export const Profile = () => {
   const { id } = useParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [toggle, setToggle] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -51,7 +53,10 @@ export const Profile = () => {
             </p>
           </div>
         </div>
-        <button className="hover:cursor-pointer">
+        <button
+          className="hover:cursor-pointer"
+          onClick={() => setToggle(!false)}
+        >
           <Edit />
         </button>
       </div>
@@ -77,6 +82,7 @@ export const Profile = () => {
           <p className="text-gray-500">No posts yet.</p>
         )}
       </div>
+      {toggle && <EditProfile onClose={() => setToggle(false)} />}
     </div>
   );
 };
