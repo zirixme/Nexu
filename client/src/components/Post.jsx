@@ -14,7 +14,7 @@ export const Post = ({
   return (
     <div className="mb-6 border-b border-gray-400 space-y-2">
       {/* Header: Avatar + Username + Time */}
-      <div className="flex items-center gap-4 mb-2">
+      <div className="flex items-center  gap-2 mb-2">
         <a
           href={`/profile/${post.user.id}`}
           className="flex items-center gap-2"
@@ -27,7 +27,7 @@ export const Post = ({
           <p className="font-semibold">{post.user.username}</p>
         </a>
         <p className="text-gray-400 text-sm">
-          {"· " + getRelativeTime(post.created_at)}
+          {"•  " + getRelativeTime(post.created_at)}
         </p>
       </div>
 
