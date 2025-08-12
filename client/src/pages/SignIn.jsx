@@ -19,6 +19,9 @@ export const SignIn = () => {
       const res = await signin(form);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userId", res.data.id);
+      localStorage.setItem("avatar_url", res.data.avatar_url);
+      console.log(localStorage.avatar_url);
+      localStorage.setItem("username", res.data.username);
       window.location.href = "/";
     } catch (error) {
       console.error("Signin failed:", error);
