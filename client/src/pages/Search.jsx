@@ -31,7 +31,7 @@ export const Search = () => {
   }, [query]);
 
   return (
-    <div className="space-y-8 flex flex-col items-center p-2 w-full max-w-md md:max-w-2xl xl:max-w-md px-4 py-4">
+    <div className="space-y-8 flex flex-col items-center p-2 w-full max-w-md md:max-w-2xl xl:max-w-3xl px-4 py-4">
       <InputWithLabel
         label={"Search"}
         id={"search"}
