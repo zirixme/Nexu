@@ -21,9 +21,12 @@ export const Header = () => {
   const location = useLocation();
 
   const [toggle, setToggle] = useState(false);
+  const username = localStorage.getItem("username");
+  const avatar = localStorage.getItem("avatar_url");
+
   return (
     <div>
-      <nav className="fixed bottom-0 md:top-0 w-full md:w-fit px-4 py-2 border md:px-6 md:py-6 border-gray-400 bg-gray-50">
+      <nav className="fixed bottom-0 md:top-0 w-full md:w-fit px-4 py-2 border md:px-6 md:py-6 border-gray-400 bg-gray-50 flex flex-col justify-between">
         <ul className="flex justify-between md:flex-col md:gap-7">
           <li>
             <a href="/" className="flex items-center gap-2">
@@ -77,8 +80,18 @@ export const Header = () => {
               <span className="hidden xl:inline">Profile</span>
             </a>
           </li>
-          <li className="hidden md:inline">
-            <a href="/signout">
+        </ul>
+        <ul className=" xl:gap-6 hidden md:flex items-center justify-center">
+          <li className="flex gap-2 items-center">
+            <img
+              src={avatar}
+              alt="user picture"
+              className="w-8 h-8 rounded-full object-cover hidden xl:inline"
+            />
+            <p className="font-bold hidden xl:inline">{username}</p>
+          </li>
+          <li>
+            <a href="/signout" className="flex gap-2">
               <LogOut />
             </a>
           </li>

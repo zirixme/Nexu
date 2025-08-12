@@ -68,7 +68,12 @@ export const signin = async (req, res) => {
     }
 
     const token = generateToken(user.id);
-    res.json({ id: user.id, username: user.username, token });
+    res.json({
+      id: user.id,
+      username: user.username,
+      token,
+      avatar_url: user.avatar_url,
+    });
   } catch (error) {
     console.error("Signin error:", error);
     res.status(500).json({ message: "Server error" });
