@@ -14,7 +14,7 @@ model User {
   email         String   @unique
   password_hash String
   bio           String?
-  avatar_url    String?
+  avatar_url    String?  @default("/user.svg")
   created_at    DateTime @default(now())
 
   posts     Post[]
