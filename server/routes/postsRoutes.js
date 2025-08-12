@@ -10,11 +10,17 @@ import {
   getComments,
 } from "../controllers/postsController.js";
 
+
+import multer from "multer";
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 const router = express.Router();
 
 router.use(protect);
 
-router.post("/", createPost);
+router.post("/", upload.single("image"), createPost);
 
 router.get("/", getPosts);
 

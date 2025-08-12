@@ -1,23 +1,31 @@
 import prisma from "../config/prisma.js";
+import cloudinary from "../config/cloudinary.js";
 
 export const createPost = async (req, res) => {
   try {
-    const { text, image_url } = req.body;
+    const fileBuffer = req.file.buffer;
     const userId = req.user.id;
+    const { text } = req.body;
 
-    if (!text && !image_url) {
-      return res
-        .status(400)
-        .json({ message: "Post must have text or an image" });
-    }
+    const uploadResult = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "post-images" },
+        (error, result) => {
+          if (error) return reject(error);
+          resolve(result);
+        }
+      );
+      stream.end(fileBuffer);
+    });
+
     const newPost = await prisma.post.create({
       data: {
         user_id: userId,
         text,
-        image_url,
+        image_url: uploadResult.secure_url,
       },
     });
-    res.status(201).json(newPost);
+    res.json({ url: uploadResult.secure_url });
   } catch (error) {
     console.error("createPost error:", error);
     res.status(500).json({ message: "Server error" });
