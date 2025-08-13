@@ -16,7 +16,7 @@ export const Post = ({
       {/* Header: Avatar + Username + Time */}
       <div className="flex items-center  gap-2 mb-2">
         <a
-          href={`/profile/${post.user.id}`}
+          href={`/profile/${post.user.username}`}
           className="flex items-center gap-2"
         >
           <img

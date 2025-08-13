@@ -4,19 +4,18 @@ import { getUser } from "../api/auth.js";
 import { Edit } from "lucide-react";
 import { EditProfile } from "../components/EditProfile.jsx";
 export const Profile = () => {
-  const { id } = useParams();
+  const { username } = useParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [toggle, setToggle] = useState(false);
-
   useEffect(() => {
-    if (!id) return;
+    if (!username) return;
 
     setLoading(true);
     setError("");
 
-    getUser(id)
+    getUser(username)
       .then((res) => {
         setUser(res.data);
       })
@@ -24,7 +23,7 @@ export const Profile = () => {
         setError("User not found or server error");
       })
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [username]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;

@@ -50,7 +50,7 @@ export const Search = () => {
               alt={user.username + "Profile pic"}
               className="w-8 h-8 rounded-full md:w-11 md:h-11 xl:w-12 xl:h-12"
             />
-            <a href={`/profile/${user.id}`}>{user.username}</a>
+            <a href={`/profile/${user.username}`}>{user.username}</a>
             <p className="text-gray-400">
               {formatNumber(user.followers.length)} {""}
               {user.followers.length === 1 ? "follower" : "followers"}

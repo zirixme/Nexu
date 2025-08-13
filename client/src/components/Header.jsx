@@ -69,7 +69,7 @@ export const Header = () => {
           </li>
           <li>
             <a
-              href={`/profile/${localStorage.getItem("userId")}`}
+              href={`/profile/${localStorage.getItem("username")}`}
               className="flex items-center gap-2"
             >
               {location.pathname.startsWith === "/profile" ? (
