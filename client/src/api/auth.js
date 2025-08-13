@@ -35,7 +35,9 @@ export const updatePost = (id, data) => API.patch(`/posts/${id}`, data);
 
 // Users
 export const searchUsers = (query) => API.get(`/u/search/${query}`);
-export const getUser = (id) => API.get(`/u/${id}`);
+export const getUser = (username) => API.get(`/u/${username}`);
+export const updateUser = (username, formData) =>
+  API.patch(`/u/${username}`, formData);
 
 // Likes
 export const toggleLikeApi = (id) => API.post(`/posts/${id}/like`);

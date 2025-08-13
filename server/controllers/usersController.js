@@ -1,10 +1,10 @@
 import prisma from "../config/prisma.js";
-
+import cloudinary from "../config/cloudinary.js";
 export const getUser = async (req, res) => {
-  const { id } = req.params;
+  const { username } = req.params;
   try {
     const user = await prisma.user.findUnique({
-      where: { id: id },
+      where: { username: username },
       select: {
         id: true,
         username: true,
@@ -15,9 +15,7 @@ export const getUser = async (req, res) => {
         posts: true,
       },
     });
-
     if (!user) return res.status(404).json({ message: "User not found" });
-
     res.json(user);
   } catch (error) {
     console.error(error);
@@ -43,5 +41,38 @@ export const searchUsers = async (req, res) => {
   } catch (error) {
     console.error("Search error:", error);
     res.status(500).json({ message: "Server erorr" });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  const { username } = req.params;
+  const { newUsername, bio } = req.body;
+
+  try {
+    let avatarUrl;
+    if (req.file) {
+      const uploadResult = await new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream({ folder: "profile-pics" }, (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          })
+          .end(req.file.buffer);
+      });
+      avatarUrl = uploadResult.secure_url;
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { username },
+      data: {
+        username: newUsername,
+        bio,
+        ...(avatarUrl && { avatar_url: avatarUrl }),
+      },
+    });
+    res.json(updatedUser);
+  } catch (error) {
+    console.error("Error updating user info:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
