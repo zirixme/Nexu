@@ -3,12 +3,16 @@ import { useParams } from "react-router";
 import { getUser } from "../api/auth.js";
 import { Edit } from "lucide-react";
 import { EditProfile } from "../components/EditProfile.jsx";
+import { Post } from "../components/Post.jsx";
+import { getPost } from "../api/auth.js";
 export const Profile = () => {
   const { username } = useParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [toggle, setToggle] = useState(false);
+  const [postId, setPostId] = useState(null);
+  const [post, setPost] = useState(null);
   useEffect(() => {
     if (!username) return;
 
@@ -25,12 +29,26 @@ export const Profile = () => {
       .finally(() => setLoading(false));
   }, [username]);
 
+  useEffect(() => {
+    console.log("Fetching post:", postId);
+    if (!postId) return;
+
+    setPost(null);
+
+    getPost(postId)
+      .then((res) => setPost(res.data))
+      .catch((error) => console.error(error));
+  }, [postId]);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
   if (!user) return <p>No user data</p>;
 
   return (
     <div className="w-full p-4 md:p-6 max-w-md md:max-w-xl xl:max-w-3xl">
+      {/* if selected post */}
+      {post && console.log(post)}
+      {post && <Post post={post} />}
       {/* Profile Info */}
       <div className="flex justify-between items-start border-b border-gray-400 pb-4">
         <div className="space-y-2">
@@ -68,6 +86,7 @@ export const Profile = () => {
               <div
                 key={post.id}
                 className="aspect-square overflow-hidden rounded bg-gray-100 hover:opacity-90 cursor-pointer"
+                onClick={() => setPostId(post.id)}
               >
                 <img
                   src={post.image_url || "/fallback.jpg"}

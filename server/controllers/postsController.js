@@ -59,6 +59,26 @@ export const getPosts = async (req, res) => {
   }
 };
 
+export const getPost = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await prisma.post.findUnique({
+      where: { id },
+      include: {
+        user: true,
+        _count: {
+          select: { likes: true, comments: true },
+        },
+      },
+    });
+
+    res.json(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 export const deletePost = async (req, res) => {
   try {
     const postId = req.params.id;

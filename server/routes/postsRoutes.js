@@ -8,8 +8,8 @@ import {
   toggleLike,
   addComment,
   getComments,
+  getPost,
 } from "../controllers/postsController.js";
-
 
 import multer from "multer";
 
@@ -23,6 +23,7 @@ router.use(protect);
 router.post("/", upload.single("image"), createPost);
 
 router.get("/", getPosts);
+router.get("/:id", getPost);
 
 router.delete("/:id", deletePost);
 

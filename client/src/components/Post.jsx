@@ -46,8 +46,8 @@ export const Post = ({
       <div className="space-x-2 w-full flex">
         <LikeButton
           postId={post.id}
-          initialLiked={post.likes.length > 0}
-          initialLikesCount={post._count.likes}
+          initialLiked={post.likes?.length > 0}
+          initialLikesCount={post._count?.likes || 0}
           onToggleLike={onToggleLike}
         />
         <button
