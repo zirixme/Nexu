@@ -30,7 +30,7 @@ export const Profile = () => {
   if (!user) return <p>No user data</p>;
 
   return (
-    <div className="w-full p-4 md:p-6">
+    <div className="w-full p-4 md:p-6 max-w-md md:max-w-xl xl:max-w-3xl">
       {/* Profile Info */}
       <div className="flex justify-between items-start border-b border-gray-400 pb-4">
         <div className="space-y-2">

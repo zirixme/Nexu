@@ -45,7 +45,7 @@ export const Home = () => {
   if (!posts.length) return <p>No posts available.</p>;
 
   return (
-    <div className="p-4 flex flex-col max-w-md md:max-w-2xl xl:max-w-3xl w-full justify-center">
+    <div className="p-4 flex flex-col max-w-md md:max-w-xl xl:max-w-3xl w-full justify-center">
       {posts.map((post) => (
         <Post
           key={post.id}
