@@ -8,11 +8,16 @@ export const Post = ({
   onToggleLike,
   activeCommentsPostId,
   setActiveCommentsPostId,
+  underline,
 }) => {
   const isCommentsOpen = activeCommentsPostId === post.id;
 
   return (
-    <div className="mb-6 border-b border-gray-400 space-y-2">
+    <div
+      className={`mb-8  space-y-2 ${
+        underline ? "border-b border-gray-400" : "border-none"
+      }`}
+    >
       {/* Header: Avatar + Username + Time */}
       <div className="flex items-center  gap-2 mb-2">
         <a

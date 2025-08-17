@@ -2,6 +2,7 @@ import { XIcon } from "lucide-react";
 import { InputWithLabel } from "./InputWithLabel.jsx";
 import { useState } from "react";
 import { updateUser } from "../api/auth.js";
+import image from "../assets/lucide/image.svg";
 export const EditProfile = ({ onClose }) => {
   const [newUsername, setNewUsername] = useState("");
   const [bio, setBio] = useState("");
@@ -32,13 +33,31 @@ export const EditProfile = ({ onClose }) => {
     <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-10">
       <form
         method="POST"
-        className="bg-gray-50 max-w-md md:max-w-xl flex w-full flex-col items-center p-4 rounded border border-gray-400 gap-4 mx-2 xl:max-w-2xl relative"
+        className="bg-gray-50 max-w-md md:max-w-xl flex w-full flex-col  px-8 py-10 rounded border border-gray-400 gap-6 mx-2 xl:max-w-2xl relative"
         onSubmit={handleUpdateProfile}
       >
+        <div>
+          <label htmlFor="image">
+            <img
+              src={localStorage.getItem("avatar_url")}
+              alt="upload image button"
+              className="w-20 h-20 rounded-full"
+            />
+          </label>
+
+          <input
+            type="file"
+            id="image"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => setAvatar(e.target.files[0])}
+          />
+        </div>
         <InputWithLabel
           name={"newUsername"}
           label={"Username"}
           value={newUsername}
+          placeholder={localStorage.getItem("username")}
           onChange={(e) => setNewUsername(e.target.value)}
         />
         <InputWithLabel
@@ -47,11 +66,7 @@ export const EditProfile = ({ onClose }) => {
           value={bio}
           onChange={(e) => setBio(e.target.value)}
         />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setAvatar(e.target.files[0])}
-        />
+
         <button
           type="submit"
           className="px-4 py-2 bg-black text-white rounded"
@@ -59,7 +74,10 @@ export const EditProfile = ({ onClose }) => {
         >
           {loading ? "Updating..." : "Update Profile"}
         </button>
-        <button className="absolute right-4 cursor-pointer" onClick={onClose}>
+        <button
+          className="absolute right-2 top-2 cursor-pointer"
+          onClick={onClose}
+        >
           <XIcon />
         </button>
       </form>

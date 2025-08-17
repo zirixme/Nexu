@@ -1,4 +1,12 @@
-export const InputWithLabel = ({ type, label, name, id, value, onChange }) => (
+export const InputWithLabel = ({
+  type,
+  label,
+  name,
+  id,
+  value,
+  onChange,
+  placeholder,
+}) => (
   <div className="relative w-full">
     <input
       type={type}
@@ -6,6 +14,7 @@ export const InputWithLabel = ({ type, label, name, id, value, onChange }) => (
       name={name}
       value={value}
       onChange={onChange}
+      placeholder={placeholder}
       className="border border-gray-400 px-4 py-2 rounded w-full"
       autoComplete="off"
     />

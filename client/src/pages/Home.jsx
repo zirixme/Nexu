@@ -53,6 +53,7 @@ export const Home = () => {
           onToggleLike={handleToggleLike}
           activeCommentsPostId={activeCommentsPostId}
           setActiveCommentsPostId={setActiveCommentsPostId}
+          underline={true}
         />
       ))}
     </div>
