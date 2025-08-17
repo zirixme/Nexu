@@ -68,10 +68,6 @@ export const Create = ({ onClose }) => {
                 }
               }}
             />
-
-            {/* <button className="cursor-pointer">
-              <img src={clapperboard} alt="import a video" />
-            </button> */}
           </div>
           <button
             className="bg-black text-gray-50 px-6 py-2 rounded"

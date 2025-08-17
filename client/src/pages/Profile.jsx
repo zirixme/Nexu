@@ -5,6 +5,7 @@ import { Edit } from "lucide-react";
 import { EditProfile } from "../components/EditProfile.jsx";
 import { Post } from "../components/Post.jsx";
 import { getPost } from "../api/auth.js";
+import { XIcon } from "lucide-react";
 export const Profile = () => {
   const { username } = useParams();
   const [user, setUser] = useState(null);
@@ -30,7 +31,6 @@ export const Profile = () => {
   }, [username]);
 
   useEffect(() => {
-    console.log("Fetching post:", postId);
     if (!postId) return;
 
     setPost(null);
@@ -46,9 +46,23 @@ export const Profile = () => {
 
   return (
     <div className="w-full p-4 md:p-6 max-w-md md:max-w-xl xl:max-w-3xl">
-      {/* if selected post */}
-      {post && console.log(post)}
-      {post && <Post post={post} />}
+      {/* if post */}
+      {post && (
+        <div className="fixed inset-0 bg-black/20 z-10 backdrop-blur-sm flex items-center justify-center">
+          <div className="max-w-md bg-gray-50 px-4 py-4 rounded relative">
+            <button
+              className="absolute top-4 right-4 cursor-pointer"
+              onClick={() => {
+                setPost(null);
+                setPostId(null);
+              }}
+            >
+              <XIcon />
+            </button>
+            <Post post={post} underline={false} />
+          </div>
+        </div>
+      )}
       {/* Profile Info */}
       <div className="flex justify-between items-start border-b border-gray-400 pb-4">
         <div className="space-y-2">
