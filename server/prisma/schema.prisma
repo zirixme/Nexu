@@ -17,11 +17,12 @@ model User {
   avatar_url    String?  @default("/user.svg")
   created_at    DateTime @default(now())
 
-  posts     Post[]
-  comments  Comment[]
-  likes     Like[]
-  followers Follow[]  @relation("UserFollowers")
-  following Follow[]  @relation("UserFollowing")
+  posts        Post[]
+  comments     Comment[]
+  likes        Like[]
+  followers    Follow[]       @relation("UserFollowers")
+  following    Follow[]       @relation("UserFollowing")
+  RefreshToken RefreshToken[]
 }
 
 model Post {
@@ -68,4 +69,13 @@ model Follow {
   following User @relation("UserFollowers", fields: [following_id], references: [id])
 
   @@id([follower_id, following_id])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
 }
