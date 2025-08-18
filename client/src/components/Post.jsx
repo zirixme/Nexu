@@ -14,12 +14,12 @@ export const Post = ({
 
   return (
     <div
-      className={`mb-8  space-y-2 ${
-        underline ? "border-b border-gray-400" : "border-none"
+      className={`space-y-2 ${
+        underline ? "border-b border-gray-400 mb-8" : "border-none mb-2"
       }`}
     >
       {/* Header: Avatar + Username + Time */}
-      <div className="flex items-center  gap-2 mb-2">
+      <div className="flex items-center  gap-2">
         <a
           href={`/profile/${post.user.username}`}
           className="flex items-center gap-2"
@@ -71,7 +71,7 @@ export const Post = ({
 
       {/* Text Content */}
       {post.user.username && (
-        <div className="flex gap-4 mb-4">
+        <div className={`flex gap-4 ${underline ? "mb-4" : "none"}`}>
           <p className="font-bold">{post.user.username}</p>
           <p>{post.text}</p>
         </div>

@@ -49,7 +49,7 @@ export const Profile = () => {
       {/* if post */}
       {post && (
         <div className="fixed inset-0 bg-black/20 z-10 backdrop-blur-sm flex items-center justify-center">
-          <div className="max-w-md bg-gray-50 px-4 py-4 rounded relative">
+          <div className="max-w-md md:max-w-xl xl:max-w-2xl 2xl:max-w-4xl bg-gray-50 px-4 py-4 rounded relative">
             <button
               className="absolute top-4 right-4 cursor-pointer"
               onClick={() => {
