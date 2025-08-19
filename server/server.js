@@ -9,7 +9,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
 import postsRoutes from "./routes/postsRoutes.js";
 import usersRoutes from "./routes/usersRoutes.js";
-
+import messageRoutes from "./routes/messagesRoutes.js";
 const app = express();
 
 // middleware //
@@ -51,6 +51,7 @@ io.on("connection", (socket) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postsRoutes);
 app.use("/api/u", usersRoutes);
+app.use("/api/messages", messageRoutes);
 
 httpServer.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on port ${process.env.PORT || 3000}.`);

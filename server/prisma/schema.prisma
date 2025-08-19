@@ -17,12 +17,14 @@ model User {
   avatar_url    String?  @default("/user.svg")
   created_at    DateTime @default(now())
 
-  posts        Post[]
-  comments     Comment[]
-  likes        Like[]
-  followers    Follow[]       @relation("UserFollowers")
-  following    Follow[]       @relation("UserFollowing")
-  RefreshToken RefreshToken[]
+  posts            Post[]
+  comments         Comment[]
+  likes            Like[]
+  followers        Follow[]       @relation("UserFollowers")
+  following        Follow[]       @relation("UserFollowing")
+  RefreshToken     RefreshToken[]
+  sentMessages     Message[]      @relation("SentMessages")
+  receivedMessages Message[]      @relation("ReceivedMessages")
 }
 
 model Post {
@@ -78,4 +80,15 @@ model RefreshToken {
   userId    String
   createdAt DateTime @default(now())
   expiresAt DateTime
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  senderId   String
+  receiverId String
+  text       String
+  createdAt  DateTime @default(now())
+
+  sender   User @relation("SentMessages", fields: [senderId], references: [id])
+  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id])
 }
