@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { getPosts } from "../api/auth.js";
 import { Post } from "../components/Post.jsx";
+import { useAuth } from "../components/AuthContext.jsx";
 
 export const Home = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeCommentsPostId, setActiveCommentsPostId] = useState(null);
-
+  const { accessToken } = useAuth();
   const handleToggleLike = (postId, liked, likesCount) => {
     setPosts((posts) =>
       posts.map((post) =>
@@ -23,6 +24,7 @@ export const Home = () => {
   };
 
   useEffect(() => {
+    if (!accessToken) return;
     const fetchPosts = async () => {
       try {
         setLoading(true);

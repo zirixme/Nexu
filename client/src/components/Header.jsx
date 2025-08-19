@@ -16,14 +16,20 @@ import { Create } from "../pages/Create.jsx";
 
 import { useState } from "react";
 import { useLocation } from "react-router";
-
+import { useAuth } from "./AuthContext.jsx";
 export const Header = () => {
   const location = useLocation();
 
   const [toggle, setToggle] = useState(false);
-  const username = localStorage.getItem("username");
-  const avatar = localStorage.getItem("avatar_url");
+  const { signout, user } = useAuth();
 
+  const handleLogout = async () => {
+    try {
+      await signout();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
   return (
     <div>
       <nav className="fixed bottom-0 md:top-0 w-full md:w-fit px-4 py-2 border md:px-6 md:py-6 border-gray-400 bg-gray-50 flex flex-col justify-between">
@@ -69,7 +75,7 @@ export const Header = () => {
           </li>
           <li>
             <a
-              href={`/profile/${localStorage.getItem("username")}`}
+              href={`/profile/${user.username}`}
               className="flex items-center gap-2"
             >
               {location.pathname.startsWith === "/profile" ? (
@@ -84,16 +90,16 @@ export const Header = () => {
         <ul className=" xl:gap-6 hidden md:flex items-center justify-center">
           <li className="flex gap-2 items-center">
             <img
-              src={avatar}
+              src={user.avatar_url}
               alt="user picture"
               className="w-8 h-8 rounded-full object-cover hidden xl:inline"
             />
-            <p className="font-bold hidden xl:inline">{username}</p>
+            <p className="font-bold hidden xl:inline">{user.username}</p>
           </li>
           <li>
-            <a href="/signout" className="flex gap-2">
+            <button className="flex gap-2" onClick={handleLogout}>
               <LogOut />
-            </a>
+            </button>
           </li>
         </ul>
       </nav>

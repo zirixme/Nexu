@@ -4,25 +4,23 @@ import apple from "../assets/apple-icon.png";
 import facebook from "../assets/facebook-icon.png";
 import { InputWithLabel } from "../components/InputWithLabel.jsx";
 import { useState } from "react";
-import { signin } from "../api/auth.js";
+import { useNavigate } from "react-router";
+import { useAuth } from "../components/AuthContext.jsx";
 export const SignIn = () => {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
-
+  const { signin } = useAuth();
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     try {
-      const res = await signin(form);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("userId", res.data.id);
-      localStorage.setItem("avatar_url", res.data.avatar_url);
-      console.log(localStorage.avatar_url);
-      localStorage.setItem("username", res.data.username);
-      window.location.href = "/";
+      await signin(form);
+      navigate("/");
     } catch (error) {
       console.error("Signin failed:", error);
       setError(error.response?.data?.message || "Signin failed");

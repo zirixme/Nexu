@@ -1,11 +1,12 @@
 import axios from "axios";
-
-const API = axios.create({
+import { getAccessToken, setAccessToken } from "./authToken.js";
+export const API = axios.create({
   baseURL: "http://localhost:3000/api",
+  withCredentials: true,
 });
 
 API.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = getAccessToken();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -14,11 +15,26 @@ API.interceptors.request.use((config) => {
 
 API.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/signin";
+  async (error) => {
+    const originalRequest = error.config;
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      document.cookie.includes("refreshToken")
+    ) {
+      originalRequest._retry = true;
+      try {
+        const res = await API.get("/auth/refresh");
+        setAccessToken(res.data.accessToken);
+        originalRequest.headers.Authorization = `Bearer ${res.data.accessToken}`;
+        return API(originalRequest);
+      } catch {
+        // refresh failed → clear token
+        setAccessToken(null);
+        return Promise.reject(error);
+      }
     }
+
     return Promise.reject(error);
   }
 );
@@ -26,7 +42,7 @@ API.interceptors.response.use(
 // Auth
 export const signin = (data) => API.post("/auth/signin", data);
 export const signup = (data) => API.post("/auth/signup", data);
-
+export const signout = () => API.post("/auth/signout");
 // Posts
 export const getPosts = () => API.get("/posts");
 export const getPost = (id) => API.get(`/posts/${id}`);

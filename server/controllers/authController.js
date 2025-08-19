@@ -127,13 +127,24 @@ export const refresh = async (req, res) => {
     const storedToken = await prisma.refreshToken.findUnique({
       where: { token },
     });
+
     if (!storedToken)
       return res.status(403).json({ message: "Invalid refresh token" });
 
     const payload = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
     const newAccessToken = generateAccessToken(payload.id);
 
-    res.json({ accessToken: newAccessToken, user: payload.id });
+    const user = await prisma.user.findUnique({
+      where: { id: payload.id },
+      select: { id: true, username: true, avatar_url: true },
+    });
+
+    res.json({
+      accessToken: newAccessToken,
+      id: user.id,
+      username: user.username,
+      avatar_url: user.avatar_url,
+    });
   } catch {
     res.status(403).json({ message: "Invalid refresh token" });
   }

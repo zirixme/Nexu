@@ -6,11 +6,12 @@ import { InputWithLabel } from "../components/InputWithLabel.jsx";
 import { useState } from "react";
 import { signup } from "../api/auth.js";
 import { useNavigate } from "react-router";
+import { useAuth } from "../components/AuthContext.jsx";
 
 export const SignUp = () => {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
   const [error, setError] = useState("");
-
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -19,9 +20,9 @@ export const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     try {
-      const res = await signup(form);
-      localStorage.setItem("token", res.data.token);
+      await signup(form);
       navigate("/");
     } catch (error) {
       console.error("Signup failed:", error);

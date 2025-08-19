@@ -1,17 +1,11 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Navigate } from "react-router";
+import { useAuth } from "./AuthContext.jsx";
 
 export const RequireAuth = ({ children }) => {
-  const navigate = useNavigate();
+  const { accessToken, loading } = useAuth();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      navigate("/signin");
-      return;
-    }
-  }, [navigate]);
+  if (loading) return <div>Loading...</div>;
+  if (!accessToken) return <Navigate to="/signin" replace />;
 
   return children;
 };
