@@ -65,4 +65,5 @@ export const postComment = (id, text) =>
   API.post(`posts/${id}/comments`, { text });
 
 // Messages
-export const getMessages = (id) => API.get(`/messages/${id}`);
+export const getConversations = (id) => API.get(`/messages/${id}`);
+export const GetChatUsers = () => API.get("/messages");
