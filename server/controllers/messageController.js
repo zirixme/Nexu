@@ -23,26 +23,26 @@ export const getMessages = async (req, res) => {
 
 export const sendMessage = async (req, res) => {
   const userId = req.user.id;
-  const {receiverId, text} = req.body;
+  const { receiverId, text } = req.body;
 
   if (!receiverId || text) {
-    return res.status(400).json({message: "Receiver and text is required"})
+    return res.status(400).json({ message: "Receiver and text is required" });
   }
   try {
     const message = await prisma.message.create({
       data: {
         senderId: userId,
         receiverId,
-        text
-      }
+        text,
+      },
       include: {
         sender: { select: { id: true, username: true, avatar_url: true } },
-        receiver: { select: { id: true, username: true, avatar_url: true } }
-      }
-    })
-    res.status(201).json(message)
+        receiver: { select: { id: true, username: true, avatar_url: true } },
+      },
+    });
+    res.status(201).json(message);
   } catch (error) {
-    console.error(error)
-    res.status(500).json({message: "Server error"})
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
-}
+};
