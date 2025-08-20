@@ -2,11 +2,14 @@ import prisma from "../config/prisma.js";
 
 export const getMessages = async (req, res) => {
   const userId = req.user.id;
-
+  const { otherUserId } = req.params.id;
   try {
     const messages = await prisma.message.findMany({
       where: {
-        OR: [{ senderId: userId }, { receiverId: userId }],
+        OR: [
+          { senderId: userId, receiverId: otherUserId },
+          { senderId: otherUserId, receiverId: userId },
+        ],
       },
       orderBy: { createdAt: "asc" },
       include: {
