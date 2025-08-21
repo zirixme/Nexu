@@ -54,7 +54,7 @@ export const signup = async (req, res) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: isDev ? "lax" : "none",
+      sameSite: isDev ? "lax" : "None",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     res.status(201).json({ accessToken, id: newUser.id });
@@ -105,7 +105,7 @@ export const signin = async (req, res) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: isDev ? "lax" : "none",
+      sameSite: isDev ? "lax" : "None",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     res.status(200).json({
@@ -166,7 +166,7 @@ export const signout = async (req, res) => {
   res.clearCookie("refreshToken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: isDev ? "lax" : "none",
+    sameSite: isDev ? "lax" : "None",
   });
   res.status(200).json({ message: "Logged out successfully" });
 };

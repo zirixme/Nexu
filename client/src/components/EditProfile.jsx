@@ -4,7 +4,7 @@ import { useState } from "react";
 import { updateUser } from "../api/auth.js";
 import image from "../assets/lucide/image.svg";
 import { useAuth } from "./AuthContext.jsx";
-
+import { useNavigate } from "react-router";
 export const EditProfile = ({ onClose }) => {
   const [newUsername, setNewUsername] = useState("");
   const [bio, setBio] = useState("");
