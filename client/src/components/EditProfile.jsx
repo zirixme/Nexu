@@ -5,14 +5,15 @@ import { updateUser } from "../api/auth.js";
 import image from "../assets/lucide/image.svg";
 import { useAuth } from "./AuthContext.jsx";
 import { useNavigate } from "react-router";
+
 export const EditProfile = ({ onClose }) => {
   const [newUsername, setNewUsername] = useState("");
   const [bio, setBio] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const username = user.username;
-
+  const navigate = useNavigate();
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -23,9 +24,13 @@ export const EditProfile = ({ onClose }) => {
       if (avatar) formData.append("image", avatar);
 
       const updatedUser = await updateUser(username, formData);
-      if (updatedUser.data.username) {
-        localStorage.setItem("username", updatedUser.data.username);
-      }
+      setUser({
+        ...user,
+        username: updatedUser.data.username,
+        avatar_url: updatedUser.data.avatar_url,
+        bio: updatedUser.data.bio,
+      });
+      navigate(`/profile/${updatedUser.data.username}`);
       onClose();
     } catch (error) {
       console.error("Error updating profile:", error);

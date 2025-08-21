@@ -104,6 +104,7 @@ export const AuthProvider = ({ children }) => {
         signup,
         signout,
         loading,
+        setUser,
       }}
     >
       {loading ? (
