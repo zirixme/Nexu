@@ -78,7 +78,7 @@ export const Header = () => {
               href={`/profile/${user.username}`}
               className="flex items-center gap-2"
             >
-              {location.pathname.startsWith === "/profile" ? (
+              {location.pathname.startsWith("/profile") ? (
                 <img src={ProfileSelected} alt="create icon" />
               ) : (
                 <UserRound />
