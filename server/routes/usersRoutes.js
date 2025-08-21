@@ -6,10 +6,12 @@ import {
 } from "../controllers/usersController.js";
 
 import multer from "multer";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
+router.use(protect);
 
 router.get("/:username", getUser);
 router.get("/search/:query", searchUsers);
