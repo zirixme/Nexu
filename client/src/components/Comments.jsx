@@ -42,7 +42,7 @@ export const Comments = ({ onClose, id }) => {
 
   return (
     <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center z-10 flex-col">
-      <div className="w-full flex flex-col items-center bg-gray-50 max-w-md rounded h-[90vh]">
+      <div className="flex w-full flex-col items-center bg-gray-50 h-full md:h-4/5 md:max-w-xl xl:max-w-2xl rounded md:mt-10">
         <div className="p-6 w-full relative ">
           <button
             onClick={onClose}
@@ -64,29 +64,35 @@ export const Comments = ({ onClose, id }) => {
                 <img
                   src={comment.user.avatar_url}
                   alt=""
-                  className="w-10 h-10 rounded-full object-cover"
+                  className="w-10 h-10 rounded-full object-cover shrink-0"
                 />
-                <div>
-                  <h2 className="font-bold">{comment.user.username}</h2>
-                  <p>{comment.text}</p>
+                <div className="max-w-md xl:max-w-2xl">
+                  {/* <h2 className="font-bold">{comment.user.username}</h2>
+                  <p className="max-w-md wrap-anywhere">{comment.text}</p> */}
+                  <p className="wrap-anywhere">
+                    <span className="font-bold mr-2">
+                      {comment.user.username}
+                    </span>
+                    {comment.text}
+                  </p>
                 </div>
               </div>
             ))
           ) : (
-            <p>No comments yet</p>
+            <p className="">No comments yet</p>
           )}
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="w-full p-4 flex items-center gap-2 border-t"
+          className="w-full p-4 flex items-center gap-2 border-t border-gray-400"
         >
           <input
             type="text"
             placeholder="Add a comment..."
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            className="flex-1 border rounded px-4 py-2"
+            className="flex-1 border border-gray-400 rounded px-4 py-2"
           />
           <button
             type="submit"
