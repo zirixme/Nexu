@@ -75,7 +75,7 @@ export const Profile = () => {
           <img
             src={user.avatar_url}
             alt={`${user.username} profile pic`}
-            className="w-20 h-20 rounded-full md:w-24 md:h-24"
+            className="w-18 h-18 rounded-full md:w-20 md:h-20 xl:w-24 xl:h-24"
           />
           <div className="ml-2 space-y-2">
             <h1 className="font-bold text-xl">{user.username}</h1>
