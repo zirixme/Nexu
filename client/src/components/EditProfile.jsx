@@ -3,12 +3,16 @@ import { InputWithLabel } from "./InputWithLabel.jsx";
 import { useState } from "react";
 import { updateUser } from "../api/auth.js";
 import image from "../assets/lucide/image.svg";
+import { useAuth } from "./AuthContext.jsx";
+
 export const EditProfile = ({ onClose }) => {
   const [newUsername, setNewUsername] = useState("");
   const [bio, setBio] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
-  const username = localStorage.getItem("username");
+  const { user } = useAuth();
+  const username = user.username;
+
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -39,7 +43,7 @@ export const EditProfile = ({ onClose }) => {
         <div>
           <label htmlFor="image">
             <img
-              src={localStorage.getItem("avatar_url")}
+              src={user.avatar_url}
               alt="upload image button"
               className="w-20 h-20 rounded-full"
             />
@@ -57,7 +61,7 @@ export const EditProfile = ({ onClose }) => {
           name={"newUsername"}
           label={"Username"}
           value={newUsername}
-          placeholder={localStorage.getItem("username")}
+          placeholder={user.username}
           onChange={(e) => setNewUsername(e.target.value)}
         />
         <InputWithLabel
