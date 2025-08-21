@@ -41,7 +41,11 @@ export const Messages = () => {
   return (
     <div className="flex w-full h-screen">
       {/* Left panel */}
-      <div className="border-r border-gray-400 overflow-y-auto w-80">
+      <div
+        className={`border-r border-gray-400 overflow-y-auto w-80 ${
+          selectedUser ? "hidden md:inline" : "inlines w-full"
+        }`}
+      >
         {users.map((user) => (
           <div
             key={user.id}
@@ -61,7 +65,11 @@ export const Messages = () => {
       </div>
 
       {/* Right panel */}
-      <div className="p-4 flex flex-col justify-between w-full">
+      <div
+        className={`p-4 flex flex-col justify-between w-full ${
+          selectedUser ? "inline" : "hidden md:inline"
+        }`}
+      >
         {!selectedUser ? (
           <p>Select a conversation</p>
         ) : (
