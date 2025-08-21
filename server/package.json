@@ -18,7 +18,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "clear && node server.js --watch",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
