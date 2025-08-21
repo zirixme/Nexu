@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import { Home } from "../pages/Home.jsx";
 import { SignIn } from "../pages/SignIn.jsx";
-import { SignUp } from "../pages/Signup.jsx";
+import { SignUp } from "../pages/SignUp.jsx";
 import { RequireAuth } from "../components/RequireAuth.jsx";
 import { Header } from "../components/Header.jsx";
 import { Layout } from "../layout/Layout.jsx";
