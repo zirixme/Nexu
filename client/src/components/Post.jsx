@@ -14,7 +14,7 @@ export const Post = ({
 
   return (
     <div
-      className={`space-y-2 ${
+      className={`space-y-2 max-w-md md:max-w-xl xl:max-w-2xl ${
         underline ? "border-b border-gray-400 mb-8" : "border-none mb-2"
       }`}
     >
