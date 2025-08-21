@@ -77,23 +77,25 @@ export const Profile = () => {
             alt={`${user.username} profile pic`}
             className="w-20 h-20 rounded-full md:w-24 md:h-24"
           />
-          <h1 className="font-bold text-xl">{user.username}</h1>
-          <p>{user.bio}</p>
-          <div className="flex gap-4">
-            <p>
-              {user.followers.length}{" "}
-              <span className="text-gray-400">followers</span>
-            </p>
-            <p>
-              {user.following.length}{" "}
-              <span className="text-gray-400">following</span>
-            </p>
-            <p>
-              {user.posts.length}{" "}
-              <span className="text-gray-400">
-                {user.posts.length === 1 ? "Post" : "Posts"}
-              </span>
-            </p>
+          <div className="ml-2 space-y-2">
+            <h1 className="font-bold text-xl">{user.username}</h1>
+            <p>{user.bio}</p>
+            <div className="flex gap-4">
+              <p>
+                {user.followers.length}{" "}
+                <span className="text-gray-400">followers</span>
+              </p>
+              <p>
+                {user.following.length}{" "}
+                <span className="text-gray-400">following</span>
+              </p>
+              <p>
+                {user.posts.length}{" "}
+                <span className="text-gray-400">
+                  {user.posts.length === 1 ? "Post" : "Posts"}
+                </span>
+              </p>
+            </div>
           </div>
         </div>
         {loggedInUser?.id === user?.id && (
