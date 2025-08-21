@@ -43,7 +43,9 @@ export const Search = () => {
       {!loading && query && result.length === 0 && (
         <p className="text-gray-500">No users found</p>
       )}
-      {loading && <p>Loading...</p>}
+      {loading && (
+        <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-20 absolute"></div>
+      )}
       {error && <p className="text-red-500">{error}</p>}
       <ul className="w-full">
         {result.map((user) => (

@@ -43,7 +43,10 @@ export const Profile = () => {
       .catch((error) => console.error(error));
   }, [postId]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 absolute"></div>
+    );
   if (error) return <p className="text-red-500">{error}</p>;
   if (!user) return <p>No user data</p>;
 

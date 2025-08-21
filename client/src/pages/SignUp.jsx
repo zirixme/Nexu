@@ -4,13 +4,14 @@ import apple from "../assets/apple-icon.png";
 import facebook from "../assets/facebook-icon.png";
 import { InputWithLabel } from "../components/InputWithLabel.jsx";
 import { useState } from "react";
-import { signup } from "../api/auth.js";
 import { useNavigate } from "react-router";
 import { useAuth } from "../components/AuthContext.jsx";
 
 export const SignUp = () => {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const { signup } = useAuth();
   const navigate = useNavigate();
 
@@ -22,13 +23,20 @@ export const SignUp = () => {
     e.preventDefault();
     setError("");
     try {
+      setLoading(true);
       await signup(form);
       navigate("/");
     } catch (error) {
       console.error("Signup failed:", error);
       setError(error.response?.data?.message || "Signup failed");
+    } finally {
+      setLoading(false);
     }
   };
+  if (loading)
+    return (
+      <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 absolute"></div>
+    );
   return (
     <main className="bg-gray-50 min-h-screen flex flex-col xl:flex-row items-center justify-center">
       <div className="space-y-8 flex flex-col items-center p-2 w-full max-w-md md:max-w-2xl xl:max-w-md px-4">

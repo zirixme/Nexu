@@ -9,6 +9,7 @@ import { useAuth } from "../components/AuthContext.jsx";
 export const SignIn = () => {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const { signin } = useAuth();
   const navigate = useNavigate();
   const handleChange = (e) => {
@@ -19,13 +20,20 @@ export const SignIn = () => {
     e.preventDefault();
     setError("");
     try {
+      setLoading(true);
       await signin(form);
       navigate("/");
     } catch (error) {
       console.error("Signin failed:", error);
       setError(error.response?.data?.message || "Signin failed");
+    } finally {
+      setLoading(false);
     }
   };
+  if (loading)
+    return (
+      <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 absolute"></div>
+    );
   return (
     <main className="bg-gray-50 min-h-screen flex flex-col xl:flex-row items-center justify-center">
       <div className="space-y-8 flex flex-col items-center p-2 w-full max-w-md md:max-w-2xl xl:max-w-md px-4">

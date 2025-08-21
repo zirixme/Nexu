@@ -45,7 +45,7 @@ export const Create = ({ onClose }) => {
         <div className="top-5 absolute bg-gray-50 rounded p-4">{error}</div>
       )}
       {loading && (
-        <div className="w-8 h-8 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin top-5 absolute"></div>
+        <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 absolute"></div>
       )}
       <form
         method="POST"
