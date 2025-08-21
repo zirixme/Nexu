@@ -2,6 +2,7 @@ import { MessageCircle } from "lucide-react";
 import { LikeButton } from "./LikeButton.jsx";
 import { Comments } from "./Comments.jsx";
 import { getRelativeTime } from "../utils/utils.js";
+import { useState } from "react";
 
 export const Post = ({
   post,
@@ -11,10 +12,10 @@ export const Post = ({
   underline,
 }) => {
   const isCommentsOpen = activeCommentsPostId === post.id;
-
+  const [commentCount, setCommentCount] = useState(post._count.comments);
   return (
     <div
-      className={`space-y-2 max-w-md md:max-w-xl xl:max-w-2xl ${
+      className={`space-y-2 ${
         underline ? "border-b border-gray-400 mb-8" : "border-none mb-2"
       }`}
     >
@@ -60,13 +61,17 @@ export const Post = ({
           onClick={() => setActiveCommentsPostId(post.id)}
         >
           <MessageCircle />
-          {post._count.comments}
+          {commentCount}
         </button>
       </div>
 
       {/* Comment Section */}
       {isCommentsOpen && (
-        <Comments id={post.id} onClose={() => setActiveCommentsPostId(null)} />
+        <Comments
+          id={post.id}
+          onClose={() => setActiveCommentsPostId(null)}
+          onCommentAdded={() => setCommentCount((prev) => prev + 1)}
+        />
       )}
 
       {/* Text Content */}

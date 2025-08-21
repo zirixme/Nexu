@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { XIcon } from "lucide-react";
 import { getComments, postComment } from "../api/auth.js";
 
-export const Comments = ({ onClose, id }) => {
+export const Comments = ({ onClose, id, onCommentAdded }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(true);
@@ -35,6 +35,7 @@ export const Comments = ({ onClose, id }) => {
       const res = await postComment(id, newComment);
       setComments((prev) => [res.data, ...prev]);
       setNewComment("");
+      if (onCommentAdded) onCommentAdded();
     } catch (error) {
       console.error("Failed to post comment:", error);
     }
@@ -54,7 +55,7 @@ export const Comments = ({ onClose, id }) => {
 
         <div className="flex-1 overflow-y-auto w-full px-4 py-2">
           {loading ? (
-            <p>Loading...</p>
+            <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 absolute"></div>
           ) : comments.length > 0 ? (
             comments.map((comment) => (
               <div
