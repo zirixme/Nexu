@@ -12,7 +12,11 @@ export const getUser = async (req, res) => {
         bio: true,
         followers: true,
         following: true,
-        posts: true,
+        posts: {
+          orderBy: {
+            created_at: "desc",
+          },
+        },
       },
     });
     if (!user) return res.status(404).json({ message: "User not found" });
