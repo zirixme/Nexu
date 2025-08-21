@@ -40,6 +40,9 @@ export const Search = () => {
         onChange={handleChange}
         value={query}
       />
+      {!loading && query && result.length === 0 && (
+        <p className="text-gray-500">No users found</p>
+      )}
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
       <ul className="w-full">
@@ -50,8 +53,13 @@ export const Search = () => {
               alt={user.username + "Profile pic"}
               className="w-8 h-8 rounded-full md:w-11 md:h-11 xl:w-12 xl:h-12"
             />
-            <a href={`/profile/${user.username}`}>{user.username}</a>
-            <p className="text-gray-400">
+            <a
+              href={`/profile/${user.username}`}
+              className="font-bold hover:underline"
+            >
+              {user.username}
+            </a>
+            <p className="text-gray-400 text-sm">
               {formatNumber(user.followers.length)} {""}
               {user.followers.length === 1 ? "follower" : "followers"}
             </p>
