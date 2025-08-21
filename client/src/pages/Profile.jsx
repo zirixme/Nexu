@@ -6,6 +6,8 @@ import { EditProfile } from "../components/EditProfile.jsx";
 import { Post } from "../components/Post.jsx";
 import { getPost } from "../api/auth.js";
 import { XIcon } from "lucide-react";
+import { useAuth } from "../components/AuthContext.jsx";
+
 export const Profile = () => {
   const { username } = useParams();
   const [user, setUser] = useState(null);
@@ -14,6 +16,7 @@ export const Profile = () => {
   const [toggle, setToggle] = useState(false);
   const [postId, setPostId] = useState(null);
   const [post, setPost] = useState(null);
+  const { user: loggedInUser } = useAuth();
   useEffect(() => {
     if (!username) return;
 
@@ -82,14 +85,22 @@ export const Profile = () => {
               {user.following.length}{" "}
               <span className="text-gray-400">following</span>
             </p>
+            <p>
+              {user.posts.length}{" "}
+              <span className="text-gray-400">
+                {user.posts.length === 1 ? "Post" : "Posts"}
+              </span>
+            </p>
           </div>
         </div>
-        <button
-          className="hover:cursor-pointer"
-          onClick={() => setToggle(!false)}
-        >
-          <Edit />
-        </button>
+        {loggedInUser?.id === user?.id && (
+          <button
+            className="hover:cursor-pointer"
+            onClick={() => setToggle(!false)}
+          >
+            <Edit />
+          </button>
+        )}
       </div>
 
       {/* User's Posts */}
