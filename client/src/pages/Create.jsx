@@ -8,8 +8,16 @@ export const Create = ({ onClose }) => {
   const [post, setPost] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handlePost = async () => {
+  const handlePost = async (e) => {
+    e.preventDefault();
+    if (!imageFile || !post.trim()) {
+      setError("Please enter text and select an image before posting.");
+      return;
+    } else {
+      setError("");
+    }
     try {
       setLoading(true);
       const formData = new FormData();
@@ -33,6 +41,9 @@ export const Create = ({ onClose }) => {
   };
   return (
     <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-10">
+      {error && (
+        <div className="top-5 absolute bg-gray-50 rounded p-4">{error}</div>
+      )}
       {loading && (
         <div className="w-8 h-8 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin top-5 absolute"></div>
       )}
@@ -72,7 +83,7 @@ export const Create = ({ onClose }) => {
           <button
             className="bg-black text-gray-50 px-6 py-2 rounded"
             onClick={handlePost}
-            type="button"
+            type="submit"
           >
             Post
           </button>
