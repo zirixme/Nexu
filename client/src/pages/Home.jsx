@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { getPosts } from "../api/auth.js";
 import { Post } from "../components/Post.jsx";
 import { useAuth } from "../components/AuthContext.jsx";
-
 export const Home = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);

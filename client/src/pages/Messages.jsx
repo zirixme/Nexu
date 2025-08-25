@@ -1,12 +1,22 @@
-import { useState, useEffect } from "react";
-import { GetChatUsers, getConversations } from "../api/auth.js";
+import { useState, useEffect, useRef } from "react";
+import { GetChatUsers, getConversations, sendMessage } from "../api/auth.js";
 
 export const Messages = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [text, setText] = useState("");
+  const messagesEndRef = useRef(null);
 
+  // Scroll to bottom whenever messages change
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(scrollToBottom, [messages]);
+
+  // Fetch users once
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -21,31 +31,47 @@ export const Messages = () => {
     fetchUsers();
   }, []);
 
+  // Fetch messages for selected user
+  const fetchMessages = async (userId) => {
+    try {
+      const res = await getConversations(userId);
+      setMessages(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Fetch messages initially and set up polling
   useEffect(() => {
     if (!selectedUser) return;
 
-    const fetchMessages = async () => {
-      try {
-        const res = await getConversations(selectedUser.id);
-        setMessages(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+    fetchMessages(selectedUser.id);
 
-    fetchMessages();
+    const interval = setInterval(() => {
+      fetchMessages(selectedUser.id);
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, [selectedUser]);
+
+  const handleSend = async () => {
+    if (!text.trim() || !selectedUser) return;
+
+    try {
+      const res = await sendMessage(selectedUser.id, text);
+      setMessages((prev) => [...prev, res.data]);
+      setText("");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
 
   return (
     <div className="flex w-full h-screen">
       {/* Left panel */}
-      <div
-        className={`border-r border-gray-400 overflow-y-auto w-80 ${
-          selectedUser ? "hidden md:inline" : "inlines w-full"
-        }`}
-      >
+      <div className="w-80 border-r border-gray-400 overflow-y-auto">
         {users.map((user) => (
           <div
             key={user.id}
@@ -65,30 +91,45 @@ export const Messages = () => {
       </div>
 
       {/* Right panel */}
-      <div
-        className={`p-4 flex flex-col justify-between w-full ${
-          selectedUser ? "inline" : "hidden md:inline"
-        }`}
-      >
+      <div className="flex flex-col flex-1">
         {!selectedUser ? (
-          <p>Select a conversation</p>
+          <p className="p-4">Select a conversation</p>
         ) : (
           <>
-            <div className="overflow-y-auto flex flex-col w-full">
+            {/* Messages container */}
+            <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
-                  className={`mb-2 p-2 rounded ${
+                  className={`p-2 rounded max-w-xs bg-gray-200 ${
                     msg.senderId === selectedUser.id
-                      ? "bg-gray-200 text-left w-fit"
-                      : "bg-gray-200 text-right self-end"
+                      ? " self-start"
+                      : "self-end"
                   }`}
                 >
                   {msg.text}
                 </div>
               ))}
+              <div ref={messagesEndRef} />
             </div>
-            <div className="mt-2">{/* input box for sending messages */}</div>
+
+            {/* Input */}
+            <div className="p-4 border-t border-gray-300 flex gap-2">
+              <input
+                type="text"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="Type a message..."
+                className="flex-1 p-2 border border-gray-300 rounded"
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+              />
+              <button
+                onClick={handleSend}
+                className="p-2 bg-black text-white rounded"
+              >
+                Send
+              </button>
+            </div>
           </>
         )}
       </div>

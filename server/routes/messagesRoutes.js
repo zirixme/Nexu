@@ -12,4 +12,5 @@ router.use(protect);
 router.get("/", getChatUsers), router.get("/:id", getMessages);
 router.post("/", sendMessage);
 
+
 export default router;

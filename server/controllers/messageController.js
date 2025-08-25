@@ -28,7 +28,7 @@ export const sendMessage = async (req, res) => {
   const userId = req.user.id;
   const { receiverId, text } = req.body;
 
-  if (!receiverId || text) {
+  if (!receiverId || !text) {
     return res.status(400).json({ message: "Receiver and text is required" });
   }
   try {
