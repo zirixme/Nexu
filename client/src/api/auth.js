@@ -56,6 +56,8 @@ export const searchUsers = (query) => API.get(`/u/search/${query}`);
 export const getUser = (username) => API.get(`/u/${username}`);
 export const updateUser = (username, formData) =>
   API.patch(`/u/${username}`, formData);
+export const followUser = (id) => API.post(`/u/follow`, { id });
+export const unfollowUser = (id) => API.post(`u/unfollow`, { id });
 
 // Likes
 export const toggleLikeApi = (id) => API.post(`/posts/${id}/like`);

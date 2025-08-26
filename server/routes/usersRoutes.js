@@ -3,6 +3,8 @@ import {
   getUser,
   searchUsers,
   updateUser,
+  followUser,
+  unfollowUser,
 } from "../controllers/usersController.js";
 
 import multer from "multer";
@@ -15,5 +17,7 @@ router.use(protect);
 
 router.get("/:username", getUser);
 router.get("/search/:query", searchUsers);
+router.post("/follow", followUser);
+router.post("/unfollow", unfollowUser);
 router.patch("/:username", upload.single("image"), updateUser);
 export default router;
