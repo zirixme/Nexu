@@ -97,7 +97,10 @@ export const Header = () => {
             <p className="font-bold hidden xl:inline">{user.username}</p>
           </li>
           <li>
-            <button className="flex gap-2" onClick={handleLogout}>
+            <button
+              className="flex gap-2 cursor-pointer"
+              onClick={handleLogout}
+            >
               <LogOut />
             </button>
           </li>

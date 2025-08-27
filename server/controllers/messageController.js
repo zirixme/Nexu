@@ -110,7 +110,7 @@ export const getChatUsers = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    // Get all messages involving the user
+    // 1. All users you've chatted with
     const messages = await prisma.message.findMany({
       where: { OR: [{ senderId: userId }, { receiverId: userId }] },
       include: {
@@ -120,11 +120,36 @@ export const getChatUsers = async (req, res) => {
       orderBy: { createdAt: "desc" },
     });
 
-    // Deduplicate to get unique users
+    // 2. Users you follow
+    const following = await prisma.follow.findMany({
+      where: { follower_id: userId },
+      include: {
+        following: { select: { id: true, username: true, avatar_url: true } },
+      },
+    });
+
+    // 3. Users who follow you
+    const followers = await prisma.follow.findMany({
+      where: { following_id: userId },
+      include: {
+        follower: { select: { id: true, username: true, avatar_url: true } },
+      },
+    });
+
+    // 4. Merge into a single map to deduplicate
     const usersMap = {};
+
     messages.forEach((msg) => {
-      const other = msg.sender.id === userId ? msg.receiver : msg.sender;
-      usersMap[other.id] = other; // last message wins
+      const other = msg.senderId === userId ? msg.receiver : msg.sender;
+      usersMap[other.id] = other;
+    });
+
+    following.forEach((f) => {
+      usersMap[f.following.id] = f.following;
+    });
+
+    followers.forEach((f) => {
+      usersMap[f.follower.id] = f.follower;
     });
 
     const chatUsers = Object.values(usersMap);

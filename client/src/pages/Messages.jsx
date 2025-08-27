@@ -5,18 +5,18 @@ export const Messages = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingUsers, setLoadingUsers] = useState(true);
   const [text, setText] = useState("");
   const messagesEndRef = useRef(null);
+  const [maintenance, setMaintenance] = useState(true);
 
   // Scroll to bottom whenever messages change
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
   useEffect(scrollToBottom, [messages]);
 
-  // Fetch users once
+  // Fetch all chat users (followers/following)
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -25,7 +25,7 @@ export const Messages = () => {
       } catch (err) {
         console.error(err);
       } finally {
-        setLoading(false);
+        setLoadingUsers(false);
       }
     };
     fetchUsers();
@@ -41,22 +41,16 @@ export const Messages = () => {
     }
   };
 
-  // Fetch messages initially and set up polling
+  // Poll messages every 3s
   useEffect(() => {
     if (!selectedUser) return;
-
     fetchMessages(selectedUser.id);
-
-    const interval = setInterval(() => {
-      fetchMessages(selectedUser.id);
-    }, 3000);
-
+    const interval = setInterval(() => fetchMessages(selectedUser.id), 3000);
     return () => clearInterval(interval);
   }, [selectedUser]);
 
   const handleSend = async () => {
     if (!text.trim() || !selectedUser) return;
-
     try {
       const res = await sendMessage(selectedUser.id, text);
       setMessages((prev) => [...prev, res.data]);
@@ -65,46 +59,47 @@ export const Messages = () => {
       console.error(err);
     }
   };
-
-  if (loading) return <p>Loading...</p>;
+  if (maintenance)
+    return <p className="text-center absolute top-2/5 text-5xl">Soon...</p>;
+  if (loadingUsers) return <p>Loading users...</p>;
 
   return (
     <div className="flex w-full h-screen">
-      {/* Left panel */}
+      {/* Sidebar */}
       <div className="w-80 border-r border-gray-400 overflow-y-auto">
         {users.map((user) => (
           <div
             key={user.id}
-            className={`p-2 hover:bg-gray-200 cursor-pointer ${
+            className={`px-4 py-3 hover:bg-gray-200 cursor-pointer ${
               selectedUser?.id === user.id ? "bg-gray-200" : ""
             }`}
             onClick={() => setSelectedUser(user)}
           >
             <img
-              src={user.avatar_url}
+              src={user.avatar_url || "/user.svg"}
               alt={user.username}
-              className="w-10 h-10 rounded-full object-cover inline-block mr-2"
+              className="w-10 h-10 rounded-full inline-block mr-2 object-cover"
             />
             {user.username}
           </div>
         ))}
       </div>
 
-      {/* Right panel */}
+      {/* Chat panel */}
       <div className="flex flex-col flex-1">
         {!selectedUser ? (
           <p className="p-4">Select a conversation</p>
         ) : (
           <>
-            {/* Messages container */}
+            {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
                   className={`p-2 rounded max-w-xs bg-gray-200 ${
                     msg.senderId === selectedUser.id
-                      ? " self-start"
-                      : "self-end"
+                      ? "self-start "
+                      : "self-end "
                   }`}
                 >
                   {msg.text}
