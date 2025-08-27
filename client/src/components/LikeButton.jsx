@@ -20,9 +20,9 @@ export const LikeButton = ({
       const data = res.data;
       setLiked(data.liked);
       setLikeCount(data.likesCount);
-      onToggleLike?.(postId, res.liked, res.likesCount);
+      onToggleLike?.(postId, data.liked, data.likesCount);
       if (onToggleLike) {
-        onToggleLike(postId, res.liked, res.likesCount);
+        onToggleLike(postId, data.liked, data.likesCount);
       }
     } catch (error) {
       console.error("Failed to toggle like", error);
