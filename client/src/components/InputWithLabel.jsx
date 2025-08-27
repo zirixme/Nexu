@@ -20,7 +20,7 @@ export const InputWithLabel = ({
     />
     <label
       htmlFor={id}
-      className="absolute -top-3 left-1 bg-gray-50 text-gray-400 select-none px-1"
+      className="absolute -top-3 left-1 bg-gray-50 dark:bg-gray-950 dark:text-white text-gray-400 select-none px-1"
     >
       {label}
     </label>

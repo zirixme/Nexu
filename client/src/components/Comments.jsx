@@ -43,7 +43,7 @@ export const Comments = ({ onClose, id, onCommentAdded }) => {
 
   return (
     <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center z-10 flex-col">
-      <div className="flex w-full flex-col items-center bg-gray-50 h-full md:h-4/5 md:max-w-xl xl:max-w-2xl rounded md:mt-10">
+      <div className="flex w-full flex-col items-center bg-gray-50 h-full md:h-4/5 md:max-w-xl xl:max-w-2xl rounded md:mt-10 dark:bg-gray-950 dark:text-white">
         <div className="p-6 w-full relative ">
           <button
             onClick={onClose}

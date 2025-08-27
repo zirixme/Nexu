@@ -32,7 +32,7 @@ export const Header = () => {
   };
   return (
     <div>
-      <nav className="fixed bottom-0 md:top-0 w-full md:w-fit px-4 py-2 border md:px-6 md:py-6 border-gray-400 bg-gray-50 flex flex-col justify-between">
+      <nav className="fixed bottom-0 md:top-0 w-full md:w-fit px-4 py-2  border-r md:px-6 md:py-6 border-gray-400 bg-gray-50 flex flex-col justify-between dark:bg-gray-950 dark:text-white">
         <ul className="flex justify-between md:flex-col md:gap-7">
           <li>
             <a href="/" className="flex items-center gap-2">

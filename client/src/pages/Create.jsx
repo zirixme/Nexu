@@ -49,9 +49,9 @@ export const Create = ({ onClose }) => {
       )}
       <form
         method="POST"
-        className="bg-gray-50 max-w-md md:max-w-xl flex w-full flex-col items-center p-4 rounded border border-gray-400 gap-4 mx-2 xl:max-w-2xl relative"
+        className="bg-gray-50 max-w-md md:max-w-xl flex w-full flex-col items-center p-4 rounded border border-gray-400 gap-4 mx-2 xl:max-w-2xl relative dark:bg-gray-950 dark:text-white"
       >
-        <button className="absolute right-4 cursor-pointer" onClick={onClose}>
+        <button className="absolute right-4 cursor-pointer " onClick={onClose}>
           <XIcon />
         </button>
         <textarea
@@ -81,7 +81,7 @@ export const Create = ({ onClose }) => {
             />
           </div>
           <button
-            className="bg-black text-gray-50 px-6 py-2 rounded"
+            className="bg-black dark:bg-white dark:text-black text-gray-50 px-6 py-2 rounded"
             onClick={handlePost}
             type="submit"
           >
