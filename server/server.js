@@ -13,14 +13,9 @@ import messageRoutes from "./routes/messagesRoutes.js";
 const app = express();
 
 // middleware //
-app.use(express.json());
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
-  })
-);
+app.use(express.json());
 
 // routes //
 app.use("/api/auth", authRoutes);
