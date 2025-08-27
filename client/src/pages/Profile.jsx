@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { getUser } from "../api/auth.js";
-import { Edit } from "lucide-react";
+import { getUser, getPost, followUser, unfollowUser } from "../api/auth.js";
+import { Edit, XIcon } from "lucide-react";
 import { EditProfile } from "../components/EditProfile.jsx";
 import { Post } from "../components/Post.jsx";
-import { getPost, followUser, unfollowUser } from "../api/auth.js";
-import { XIcon } from "lucide-react";
 import { useAuth } from "../components/AuthContext.jsx";
 
 export const Profile = () => {
@@ -13,11 +11,16 @@ export const Profile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [toggle, setToggle] = useState(false);
+  const [toggleEditProfile, setToggleEditProfile] = useState(false);
+
+  // Modal post state
   const [postId, setPostId] = useState(null);
   const [post, setPost] = useState(null);
+  const [activeCommentsPostId, setActiveCommentsPostId] = useState(null);
+
   const { user: loggedInUser } = useAuth();
 
+  // Fetch user data
   useEffect(() => {
     if (!username) return;
 
@@ -25,25 +28,22 @@ export const Profile = () => {
     setError("");
 
     getUser(username)
-      .then((res) => {
-        setUser(res.data);
-      })
-      .catch(() => {
-        setError("User not found or server error");
-      })
+      .then((res) => setUser(res.data))
+      .catch(() => setError("User not found or server error"))
       .finally(() => setLoading(false));
   }, [username]);
 
+  // Fetch single post for modal
   useEffect(() => {
     if (!postId) return;
 
     setPost(null);
-
     getPost(postId)
       .then((res) => setPost(res.data))
-      .catch((error) => console.error(error));
+      .catch((err) => console.error(err));
   }, [postId]);
 
+  // Follow/unfollow handler
   const handleFollow = async () => {
     try {
       const updatedUser = isFollowing
@@ -55,22 +55,37 @@ export const Profile = () => {
     }
   };
 
+  // Toggle like for modal post
+  const handleToggleLike = (postId, liked, likesCount) => {
+    // just update the single post object
+    setPost((prev) =>
+      prev && prev.id === postId
+        ? {
+            ...prev,
+            likedByCurrentUser: liked,
+            _count: { ...prev._count, likes: likesCount },
+          }
+        : prev
+    );
+  };
+
   if (loading)
     return (
       <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 absolute"></div>
     );
   if (error) return <p className="text-red-500">{error}</p>;
   if (!user) return <p>No user data</p>;
-  const followerIds = user.followers.map((f) => f.follower?.id).filter(Boolean); // remove undefined
+
+  const followerIds = user.followers.map((f) => f.follower?.id).filter(Boolean);
   const isFollowing = followerIds.includes(loggedInUser?.id);
   const isOwnProfile = loggedInUser?.id === user?.id;
 
   return (
     <div className="w-full p-4 md:p-6 max-w-md md:max-w-xl xl:max-w-3xl">
-      {/* if post */}
+      {/* Modal Post */}
       {post && (
         <div className="fixed inset-0 bg-black/20 z-10 backdrop-blur-sm flex items-center justify-center">
-          <div className="max-w-md md:max-w-xl xl:max-w-2xl 2xl:max-w-4xl bg-gray-50 px-4 py-4 rounded relative  ">
+          <div className="max-w-md md:max-w-xl xl:max-w-2xl bg-gray-50 px-4 py-4 rounded relative">
             <button
               className="absolute top-4 right-4 cursor-pointer"
               onClick={() => {
@@ -80,10 +95,18 @@ export const Profile = () => {
             >
               <XIcon />
             </button>
-            <Post post={post} underline={false} />
+
+            <Post
+              post={post}
+              onToggleLike={handleToggleLike}
+              activeCommentsPostId={activeCommentsPostId}
+              setActiveCommentsPostId={setActiveCommentsPostId}
+              underline={false}
+            />
           </div>
         </div>
       )}
+
       {/* Profile Info */}
       <div className="flex justify-between items-start border-b border-gray-400 pb-4 relative">
         <div className="space-y-2 w-full">
@@ -92,10 +115,10 @@ export const Profile = () => {
             alt={`${user.username} profile pic`}
             className="w-18 h-18 rounded-full md:w-20 md:h-20 xl:w-24 xl:h-24"
           />
-          <div className=" space-y-2 w-full">
+          <div className="space-y-2 w-full">
             <h1 className="font-bold text-xl">{user.username}</h1>
             <p>{user.bio}</p>
-            <div className=" flex justify-between w-full  items-center ">
+            <div className="flex justify-between w-full items-center">
               <div className="flex gap-4">
                 <p>
                   {user.followers.length}{" "}
@@ -112,47 +135,41 @@ export const Profile = () => {
                   </span>
                 </p>
               </div>
-              {!isOwnProfile &&
-                (isFollowing ? (
-                  <button
-                    className="px-4 py-2 bg-black text-white rounded cursor-pointer transition self-end"
-                    onClick={handleFollow}
-                  >
-                    Unfollow
-                  </button>
-                ) : (
-                  <button
-                    className="px-4 py-2 bg-black text-white rounded cursor-pointer transition self-end"
-                    onClick={handleFollow}
-                  >
-                    Follow
-                  </button>
-                ))}
+
+              {!isOwnProfile && (
+                <button
+                  className="px-4 py-2 bg-black text-white rounded cursor-pointer transition self-end"
+                  onClick={handleFollow}
+                >
+                  {isFollowing ? "Unfollow" : "Follow"}
+                </button>
+              )}
             </div>
           </div>
         </div>
-        {loggedInUser?.id === user?.id && (
+
+        {isOwnProfile && (
           <button
             className="hover:cursor-pointer absolute right-0"
-            onClick={() => setToggle(!false)}
+            onClick={() => setToggleEditProfile(!toggleEditProfile)}
           >
             <Edit />
           </button>
         )}
       </div>
 
-      {/* User's Posts */}
+      {/* User Posts */}
       <div className="mt-6">
         {user.posts?.length ? (
           <div className="grid grid-cols-3 gap-2 md:gap-4">
-            {user.posts.map((post) => (
+            {user.posts.map((p) => (
               <div
-                key={post.id}
+                key={p.id}
                 className="aspect-square overflow-hidden rounded bg-gray-100 hover:opacity-90 cursor-pointer"
-                onClick={() => setPostId(post.id)}
+                onClick={() => setPostId(p.id)}
               >
                 <img
-                  src={post.image_url || "/fallback.jpg"}
+                  src={p.image_url || "/fallback.jpg"}
                   alt={`Post by ${user.username}`}
                   className="w-full h-full object-cover"
                 />
@@ -163,7 +180,10 @@ export const Profile = () => {
           <p className="text-gray-500">No posts yet.</p>
         )}
       </div>
-      {toggle && <EditProfile onClose={() => setToggle(false)} />}
+
+      {toggleEditProfile && (
+        <EditProfile onClose={() => setToggleEditProfile(false)} />
+      )}
     </div>
   );
 };
