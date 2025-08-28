@@ -51,7 +51,7 @@ export const Post = ({
       )}
 
       {/* Like + Comment Buttons */}
-      <div className="space-x-2 w-full flex">
+      <div className="space-x-2 w-full flex ">
         <LikeButton
           postId={post.id}
           initialLiked={post.likes?.length > 0}

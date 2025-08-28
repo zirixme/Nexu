@@ -11,6 +11,10 @@ export const LikeButton = ({
   const [likeCount, setLikeCount] = useState(initialLikesCount);
   const [loading, setLoading] = useState(false);
 
+  const isDark = document.documentElement.classList.contains("dark");
+  const strokeColor = liked ? "red" : isDark ? "white" : "black";
+  const fillColor = liked ? "red" : "none";
+
   const toggleLike = async () => {
     if (loading) return;
 
@@ -37,7 +41,7 @@ export const LikeButton = ({
       onClick={toggleLike}
       disabled={loading}
     >
-      <Heart fill={liked ? "red" : "none"} stroke={liked ? "red" : "black"} />
+      <Heart fill={fillColor} stroke={strokeColor} />
       {likeCount}
     </button>
   );
