@@ -41,7 +41,7 @@ export const EditProfile = ({ onClose }) => {
     <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-10">
       <form
         method="POST"
-        className="bg-gray-50 max-w-md md:max-w-xl flex w-full flex-col  px-8 py-10 rounded border border-gray-400 gap-6 mx-2 xl:max-w-2xl relative"
+        className="bg-gray-50 max-w-md md:max-w-xl flex w-full flex-col  px-8 py-10 rounded border border-gray-400 gap-6 mx-2 xl:max-w-2xl relative dark:bg-black"
         onSubmit={handleUpdateProfile}
       >
         <div>
@@ -77,7 +77,7 @@ export const EditProfile = ({ onClose }) => {
 
         <button
           type="submit"
-          className="px-4 py-2 bg-black text-white rounded"
+          className="px-4 py-2 bg-black text-white rounded dark:bg-white dark:text-black"
           disabled={loading}
         >
           {loading ? "Updating..." : "Update Profile"}
