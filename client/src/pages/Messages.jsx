@@ -60,7 +60,22 @@ export const Messages = () => {
     }
   };
   if (maintenance)
-    return <p className="text-center absolute top-2/5 text-5xl">Soon...</p>;
+    return (
+      <p className="text-center absolute top-2/12 text-5xl font-bold">
+        <img
+          src="https://i.pinimg.com/originals/68/5e/b4/685eb4a66bfe809067fc677bb2a361ea.gif"
+          alt="Funny GIF"
+          className="w-2xl object-cover mb-4"
+        />
+        <p className="flex justify-center gap-3">
+          Soon...
+          <img
+            src="https://i.pinimg.com/736x/94/71/12/947112393216f5aa4abfa76ade48c2f0.jpg"
+            className="w-20"
+          />
+        </p>
+      </p>
+    );
   if (loadingUsers) return <p>Loading users...</p>;
 
   return (
