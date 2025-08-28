@@ -1,8 +1,10 @@
 import logo from "../assets/logo-189x46.svg";
+import darkLogo from "../assets/logo-dark.svg";
 import google from "../assets/google-icon.png";
 import apple from "../assets/apple-icon.png";
 import facebook from "../assets/facebook-icon.png";
 import { InputWithLabel } from "../components/InputWithLabel.jsx";
+import { useTheme } from "../hooks/useTheme.js";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../components/AuthContext.jsx";
@@ -10,6 +12,7 @@ import { Canvas } from "@react-three/fiber";
 import { Logo3D } from "../components/Logo3D.jsx";
 import { OrbitControls } from "@react-three/drei";
 export const SignIn = () => {
+  const theme = useTheme();
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,9 +41,9 @@ export const SignIn = () => {
       <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 absolute"></div>
     );
   return (
-    <main className="bg-gray-50 min-h-screen flex flex-col xl:flex-row items-center justify-center">
-      <div className="space-y-8 flex flex-col items-center p-2 w-full max-w-md md:max-w-2xl xl:max-w-md px-4">
-        <img src={logo} alt="company logo" />
+    <main className=" bg-gray-50 min-h-screen flex flex-col xl:flex-row items-center justify-center dark:bg-black dark:text-white">
+      <div className="space-y-8 flex flex-col items-center p-2 w-full max-w-md md:max-w-2xl xl:max-w-md px-4 ">
+        <img src={theme === "dark" ? darkLogo : logo} alt="company logo" />
         <div className="text-center">
           <h1 className="text-xl font-bold">Welcome back!</h1>
           <p className="text-gray-600">Please enter your details</p>
@@ -70,7 +73,7 @@ export const SignIn = () => {
             Forgot password?
           </a>
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <button className="w-full px-4 py-2 bg-black rounded text-white hover:cursor-pointer">
+          <button className="w-full px-4 py-2 bg-black dark:bg-testRed dark:text-black rounded text-white hover:cursor-pointer">
             Sign In
           </button>
         </form>

@@ -6,6 +6,7 @@ import {
   UserRound,
   LogOut,
 } from "lucide-react";
+import { DarkModeToggle } from "./DarkModeToggle.jsx";
 import HomeSelected from "../assets/lucide/house.svg";
 import SearchSelected from "../assets/lucide/user-search.svg";
 import CreateSelected from "../assets/lucide/circle-plus.svg";
@@ -85,6 +86,9 @@ export const Header = () => {
               )}
               <span className="hidden xl:inline">Profile</span>
             </a>
+          </li>
+          <li>
+            <DarkModeToggle />
           </li>
         </ul>
         <ul className=" xl:gap-6 hidden md:flex items-center justify-center">
