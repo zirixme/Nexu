@@ -16,7 +16,9 @@ export const Post = ({
   return (
     <div
       className={`space-y-2 ${
-        underline ? "border-b border-gray-400 mb-8" : "border-none mb-2"
+        underline
+          ? "border-b border-gray-400 mb-8 dark:dark:border-gray-600"
+          : "border-none mb-2"
       }`}
     >
       {/* Header: Avatar + Username + Time */}

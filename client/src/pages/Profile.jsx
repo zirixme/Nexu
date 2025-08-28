@@ -85,7 +85,7 @@ export const Profile = () => {
       {/* Modal Post */}
       {post && (
         <div className="fixed inset-0 bg-black/20 z-10 backdrop-blur-sm flex items-center justify-center">
-          <div className="max-w-md md:max-w-xl xl:max-w-2xl bg-gray-50 px-4 py-4 rounded relative">
+          <div className="max-w-md md:max-w-xl xl:max-w-2xl bg-gray-50 dark:bg-black dark:text-white px-4 py-4 rounded relative">
             <button
               className="absolute top-4 right-4 cursor-pointer"
               onClick={() => {
@@ -108,7 +108,7 @@ export const Profile = () => {
       )}
 
       {/* Profile Info */}
-      <div className="flex justify-between items-start border-b border-gray-400 pb-4 relative">
+      <div className="flex justify-between items-start border-b border-gray-400 dark:border-gray-600 pb-4 relative">
         <div className="space-y-2 w-full">
           <img
             src={user.avatar_url}

@@ -112,12 +112,12 @@ export const SignIn = () => {
       </div>
 
       <div className="hidden xl:flex w-full h-screen items-center justify-center bg-black">
-        <Canvas>
+        {/* <Canvas>
           <ambientLight intensity={0.5} />
           <directionalLight position={[5, 5, 5]} />
           <Logo3D modelPath="/Nexu-Logo.glb" />
           <OrbitControls enableZoom={false} enablePan={false} />
-        </Canvas>
+        </Canvas> */}
       </div>
     </main>
   );

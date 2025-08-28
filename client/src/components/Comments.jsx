@@ -60,7 +60,7 @@ export const Comments = ({ onClose, id, onCommentAdded }) => {
             comments.map((comment) => (
               <div
                 key={comment.id}
-                className="border-b border-gray-400 py-2 flex gap-4"
+                className="border-b border-gray-400 dark:dark:border-gray-600 py-2 flex gap-4"
               >
                 <img
                   src={comment.user.avatar_url}
@@ -86,18 +86,18 @@ export const Comments = ({ onClose, id, onCommentAdded }) => {
 
         <form
           onSubmit={handleSubmit}
-          className="w-full p-4 flex items-center gap-2 border-t border-gray-400"
+          className="w-full p-4 flex items-center gap-2 border-t border-gray-400 dark:border-gray-600"
         >
           <input
             type="text"
             placeholder="Add a comment..."
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            className="flex-1 border border-gray-400 rounded px-4 py-2"
+            className="flex-1 border border-gray-400 rounded px-4 py-2 dark:border-gray-600"
           />
           <button
             type="submit"
-            className="bg-black text-white px-4 py-2 rounded"
+            className="bg-black dark:bg-white dark:text-black  text-white px-4 py-2 rounded"
           >
             Post
           </button>
