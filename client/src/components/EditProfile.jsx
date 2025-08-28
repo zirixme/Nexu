@@ -2,7 +2,6 @@ import { XIcon } from "lucide-react";
 import { InputWithLabel } from "./InputWithLabel.jsx";
 import { useState } from "react";
 import { updateUser } from "../api/auth.js";
-import image from "../assets/lucide/image.svg";
 import { useAuth } from "./AuthContext.jsx";
 import { useNavigate } from "react-router";
 

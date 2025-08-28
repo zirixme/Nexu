@@ -5,6 +5,7 @@ import {
   MessageSquare,
   UserRound,
   LogOut,
+  MoonIcon,
 } from "lucide-react";
 import { DarkModeToggle } from "./DarkModeToggle.jsx";
 import HomeSelected from "../assets/lucide/house.svg";
@@ -16,11 +17,8 @@ import ProfileSelected from "../assets/lucide/user-round.svg";
 import { Create } from "../pages/Create.jsx";
 
 import { useState } from "react";
-import { useLocation } from "react-router";
 import { useAuth } from "./AuthContext.jsx";
 export const Header = () => {
-  const location = useLocation();
-
   const [toggle, setToggle] = useState(false);
   const { signout, user } = useAuth();
 
@@ -37,21 +35,15 @@ export const Header = () => {
         <ul className="flex justify-between md:flex-col md:gap-7">
           <li>
             <a href="/" className="flex items-center gap-2">
-              {location.pathname === "/" ? (
-                <img src={HomeSelected} alt="home icon" />
-              ) : (
-                <Home />
-              )}
+              <Home />
+
               <span className="hidden xl:inline">Home</span>
             </a>
           </li>
           <li>
             <a href="/search" className="flex items-center gap-2">
-              {location.pathname === "/search" ? (
-                <img src={SearchSelected} alt="search icon" />
-              ) : (
-                <UserSearch />
-              )}
+              <UserSearch />
+
               <span className="hidden xl:inline">Search</span>
             </a>
           </li>
@@ -66,11 +58,8 @@ export const Header = () => {
           </li>
           <li>
             <a href="/messages" className="flex items-center gap-2">
-              {location.pathname === "/messages" ? (
-                <img src={MessagesSelected} alt="create icon" />
-              ) : (
-                <MessageSquare />
-              )}
+              <MessageSquare />
+
               <span className="hidden xl:inline">Messages</span>
             </a>
           </li>
@@ -79,16 +68,13 @@ export const Header = () => {
               href={`/profile/${user.username}`}
               className="flex items-center gap-2"
             >
-              {location.pathname.startsWith("/profile") ? (
-                <img src={ProfileSelected} alt="create icon" />
-              ) : (
-                <UserRound />
-              )}
+              <UserRound />
+
               <span className="hidden xl:inline">Profile</span>
             </a>
           </li>
           <li>
-            <DarkModeToggle />
+            <DarkModeToggle svg={MoonIcon} />
           </li>
         </ul>
         <ul className=" xl:gap-6 hidden md:flex items-center justify-center">

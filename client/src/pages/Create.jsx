@@ -1,7 +1,5 @@
-import image from "../assets/lucide/image.svg";
-// import clapperboard from "../assets/lucide/clapperboard.svg";
 import { useState } from "react";
-import { XIcon } from "lucide-react";
+import { XIcon, ImageIcon } from "lucide-react";
 import { createPost } from "../api/auth.js";
 import { getPosts } from "../api/auth.js";
 export const Create = ({ onClose }) => {
@@ -65,7 +63,7 @@ export const Create = ({ onClose }) => {
         <div className="flex justify-between w-full">
           <div className="flex gap-2">
             <label htmlFor="image" className="cursor-pointer">
-              <img src={image} alt="import image" />
+              <ImageIcon size={32} />
             </label>
             <input
               type="file"

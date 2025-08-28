@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }) => {
     avatar_url: null,
   });
 
-  // Refresh token on mount
   useEffect(() => {
     const refresh = async () => {
       try {

@@ -138,7 +138,7 @@ export const Profile = () => {
 
               {!isOwnProfile && (
                 <button
-                  className="px-4 py-2 bg-black text-white rounded cursor-pointer transition self-end"
+                  className="px-4 py-2 bg-black text-white rounded cursor-pointer transition self-end dark:bg-white dark:text-black"
                   onClick={handleFollow}
                 >
                   {isFollowing ? "Unfollow" : "Follow"}
