@@ -17,9 +17,10 @@ export const DarkModeToggle = () => {
   return (
     <button
       onClick={() => setDark(!dark)}
-      className=" text-black dark:text-white"
+      className=" text-black dark:text-white flex gap-2"
     >
       <MoonIcon />
+      <span className="hidden xl:inline">Theme</span>
     </button>
   );
 };
