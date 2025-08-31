@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { XIcon, ImageIcon } from "lucide-react";
 import { createPost } from "../api/auth.js";
 import { getPosts } from "../api/auth.js";
@@ -7,6 +7,16 @@ export const Create = ({ onClose }) => {
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [preview, setPreview] = useState(null);
+
+  useEffect(() => {
+    if (!imageFile) return;
+    const objectUrl = URL.createObjectURL(imageFile);
+    console.log(objectUrl);
+    setPreview(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [imageFile]);
 
   const handlePost = async (e) => {
     e.preventDefault();
@@ -62,8 +72,11 @@ export const Create = ({ onClose }) => {
         />
         <div className="flex justify-between w-full">
           <div className="flex gap-2">
-            <label htmlFor="image" className="cursor-pointer">
+            <label htmlFor="image" className="cursor-pointer flex gap-2">
               <ImageIcon size={32} />
+              {preview && (
+                <img className="w-8 h-8 object-cover" src={preview} />
+              )}
             </label>
             <input
               type="file"
