@@ -21,7 +21,9 @@ import { useAuth } from "./AuthContext.jsx";
 export const Header = () => {
   const [toggle, setToggle] = useState(false);
   const { signout, user } = useAuth();
-
+  const [dark, setDark] = useState(
+    () => localStorage.getItem("theme") === "dark"
+  );
   const handleLogout = async () => {
     try {
       await signout();
@@ -78,12 +80,14 @@ export const Header = () => {
           </li>
         </ul>
         <ul className=" xl:gap-6 hidden md:flex items-center justify-center">
-          <li className="flex gap-2 items-center">
-            <img
-              src={user.avatar_url}
-              alt="user picture"
-              className="w-8 h-8 rounded-full object-cover hidden xl:inline"
-            />
+          <li className="flex gap-3 items-center">
+            <div className="bg-gray-50 rounded-full">
+              <img
+                src={user.avatar_url}
+                alt="user picture"
+                className="w-12 h-12 rounded-full object-cover hidden xl:inline border border-gray-50"
+              />
+            </div>
             <p className="font-bold hidden xl:inline">{user.username}</p>
           </li>
           <li>

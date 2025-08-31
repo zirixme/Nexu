@@ -39,6 +39,7 @@ export const Search = () => {
         type={"search"}
         onChange={handleChange}
         value={query}
+        dark={true}
       />
       {!loading && query && result.length === 0 && (
         <p className="text-gray-500">No users found</p>

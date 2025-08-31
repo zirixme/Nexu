@@ -1,6 +1,6 @@
-import { XIcon } from "lucide-react";
+import { XIcon, Pencil } from "lucide-react";
 import { InputWithLabel } from "./InputWithLabel.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { updateUser } from "../api/auth.js";
 import { useAuth } from "./AuthContext.jsx";
 import { useNavigate } from "react-router";
@@ -10,9 +10,23 @@ export const EditProfile = ({ onClose }) => {
   const [bio, setBio] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState(null);
   const { user, setUser } = useAuth();
+  const [dark, setDark] = useState(
+    () => localStorage.getItem("theme") === "dark"
+  );
   const username = user.username;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!avatar) return;
+    const objectUrl = URL.createObjectURL(avatar);
+    console.log(objectUrl);
+    setPreview(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [avatar]);
+
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -46,11 +60,17 @@ export const EditProfile = ({ onClose }) => {
       >
         <div>
           <label htmlFor="image">
-            <img
-              src={user.avatar_url}
-              alt="upload image button"
-              className="w-20 h-20 rounded-full"
-            />
+            <div className="bg-gray-50 w-fit rounded-full relative cursor-pointer">
+              <img
+                src={preview || user.avatar_url}
+                alt="upload image button"
+                className="w-20 h-20 rounded-full border border-gray-50 "
+              />
+              <div className="absolute inset-0 hover:bg-black/20 transition-all duration-300 rounded-full"></div>
+              <div className="absolute top-0 right-0 bg-gray-50 rounded-full p-1">
+                <Pencil className="  " stroke="black" />
+              </div>
+            </div>
           </label>
 
           <input
@@ -67,11 +87,13 @@ export const EditProfile = ({ onClose }) => {
           value={newUsername}
           placeholder={user.username}
           onChange={(e) => setNewUsername(e.target.value)}
+          dark={true}
         />
         <InputWithLabel
           name={"bio"}
           label={"Bio"}
           value={bio}
+          dark={true}
           onChange={(e) => setBio(e.target.value)}
         />
 

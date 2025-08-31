@@ -110,11 +110,13 @@ export const Profile = () => {
       {/* Profile Info */}
       <div className="flex justify-between items-start border-b border-gray-400 dark:border-gray-600 pb-4 relative">
         <div className="space-y-2 w-full">
-          <img
-            src={user.avatar_url}
-            alt={`${user.username} profile pic`}
-            className="w-18 h-18 rounded-full md:w-20 md:h-20 xl:w-24 xl:h-24"
-          />
+          <div className="bg-gray-50 w-fit rounded-full mb-4">
+            <img
+              src={user.avatar_url}
+              alt={`${user.username} profile pic`}
+              className="w-18 h-18 rounded-full md:w-20 md:h-20 xl:w-24 xl:h-24 border border-gray-50"
+            />
+          </div>
           <div className="space-y-2 w-full">
             <h1 className="font-bold text-xl">{user.username}</h1>
             <p>{user.bio}</p>

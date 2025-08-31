@@ -115,7 +115,11 @@ export const followUser = async (req, res) => {
     const updatedUser = await prisma.user.findUnique({
       where: { id: following },
       include: {
-        posts: true,
+        posts: {
+          orderBy: {
+            created_at: "desc",
+          },
+        },
         followers: {
           select: { follower: { select: { id: true } } },
         },
@@ -148,7 +152,11 @@ export const unfollowUser = async (req, res) => {
     const updatedUser = await prisma.user.findUnique({
       where: { id: following },
       include: {
-        posts: true,
+        posts: {
+          orderBy: {
+            created_at: "desc",
+          },
+        },
         followers: {
           select: { follower: { select: { id: true } } },
         },
