@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { getUser, getPost, followUser, unfollowUser } from "../api/auth.js";
-import { Edit, XIcon } from "lucide-react";
+import { Edit, XIcon, Ellipsis } from "lucide-react";
 import { EditProfile } from "../components/EditProfile.jsx";
 import { Post } from "../components/Post.jsx";
 import { useAuth } from "../components/AuthContext.jsx";
-
+import { PostOptions } from "../components/PostOptions.jsx";
 export const Profile = () => {
   const { username } = useParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [toggleEditProfile, setToggleEditProfile] = useState(false);
-
+  const [options, setOptions] = useState(false);
   // Modal post state
   const [postId, setPostId] = useState(null);
   const [post, setPost] = useState(null);
@@ -20,6 +20,16 @@ export const Profile = () => {
 
   const { user: loggedInUser } = useAuth();
 
+  const onPostDeleted = (id) => {
+    setUser((prev) =>
+      prev ? { ...prev, posts: prev.posts.filter((p) => p.id !== id) } : prev
+    );
+    if (post?.id === id) {
+      setPost(null);
+      setPostId(null);
+      setOptions(false);
+    }
+  };
   // Fetch user data
   useEffect(() => {
     if (!username) return;
@@ -83,6 +93,14 @@ export const Profile = () => {
   return (
     <div className="w-full p-4 md:p-6 max-w-md md:max-w-xl xl:max-w-3xl">
       {/* Modal Post */}
+      {options && (
+        <PostOptions
+          Close={() => setOptions(false)}
+          postId={postId}
+          username={username}
+          onPostDeleted={onPostDeleted}
+        />
+      )}
       {post && (
         <div className="fixed inset-0 bg-black/20 z-10 backdrop-blur-sm flex items-center justify-center">
           <div className="max-w-md md:max-w-xl xl:max-w-2xl bg-gray-50 dark:bg-black dark:text-white px-4 py-4 rounded relative">
@@ -95,6 +113,14 @@ export const Profile = () => {
             >
               <XIcon />
             </button>
+            {isOwnProfile && (
+              <button
+                className="absolute top-4 right-16 cursor-pointer"
+                onClick={() => setOptions(!false)}
+              >
+                <Ellipsis />
+              </button>
+            )}
 
             <Post
               post={post}
