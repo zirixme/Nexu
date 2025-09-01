@@ -1,5 +1,22 @@
 import { deletePost } from "../api/auth.js";
-export const PostOptions = ({ Close, postId, onPostDeleted }) => {
+import { deleteComment } from "../api/auth.js";
+export const PostOptions = ({
+  Close,
+  postId,
+  onPostDeleted,
+  comment,
+  commentId,
+  onCommentDeleted,
+}) => {
+  const handleDeleteComment = async () => {
+    try {
+      await deleteComment(postId, commentId);
+      onCommentDeleted(commentId);
+      Close();
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const handleDeletePost = async () => {
     const id = postId;
     try {
@@ -15,7 +32,7 @@ export const PostOptions = ({ Close, postId, onPostDeleted }) => {
       <div className="bg-gray-50 text-black dark:bg-black dark:text-white  rounded flex flex-col max-w-md w-full">
         <button
           className="cursor-pointer hover:bg-gray-200 p-4 transition-all duration-300 text-red-500 font-bold border-b border-gray-300"
-          onClick={handleDeletePost}
+          onClick={comment ? handleDeleteComment : handleDeletePost}
         >
           Delete
         </button>
