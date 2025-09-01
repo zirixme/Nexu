@@ -75,7 +75,7 @@ export const Create = ({ onClose }) => {
             <label htmlFor="image" className="cursor-pointer flex gap-2">
               <ImageIcon size={32} />
               {preview && (
-                <img className="w-8 h-8 object-cover" src={preview} />
+                <img className="w-8 h-8 object-cover rounded" src={preview} />
               )}
             </label>
             <input
