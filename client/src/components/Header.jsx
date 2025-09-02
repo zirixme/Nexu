@@ -36,21 +36,21 @@ export const Header = () => {
               <img src={logo} alt="logo" className="w-28" />
             </a>
           </li>
-          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2">
+          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2 transition-all">
             <a href="/" className="flex items-center gap-2">
               <Home />
 
               <span className="hidden xl:inline ">Home</span>
             </a>
           </li>
-          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2">
+          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2 transition-all">
             <a href="/search" className="flex items-center gap-2">
               <UserSearch />
 
               <span className="hidden xl:inline">Search</span>
             </a>
           </li>
-          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2">
+          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2 transition-all">
             <button
               className="flex items-center gap-2 cursor-pointer"
               onClick={() => setToggle(!toggle)}
@@ -59,14 +59,14 @@ export const Header = () => {
               <span className="hidden xl:inline">Create</span>
             </button>
           </li>
-          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2">
+          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2 transition-all">
             <a href="/messages" className="flex items-center gap-2">
               <MessageSquare />
 
               <span className="hidden xl:inline">Messages</span>
             </a>
           </li>
-          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2">
+          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2 transition-all">
             <a
               href={`/profile/${user.username}`}
               className="flex items-center gap-2"
@@ -76,11 +76,11 @@ export const Header = () => {
               <span className="hidden xl:inline">Profile</span>
             </a>
           </li>
-          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2">
+          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2 transition-all">
             <DarkModeToggle svg={MoonIcon} />
           </li>
         </ul>
-        <ul className=" xl:gap-6 hidden md:flex items-center justify-center py-2">
+        <ul className=" xl:gap-6 hidden md:flex items-center justify-center py-2 ">
           <li className="flex gap-3 items-center">
             <div className="bg-gray-50 rounded-full">
               <img
