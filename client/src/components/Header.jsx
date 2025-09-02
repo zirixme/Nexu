@@ -8,11 +8,7 @@ import {
   MoonIcon,
 } from "lucide-react";
 import { DarkModeToggle } from "./DarkModeToggle.jsx";
-import HomeSelected from "../assets/lucide/house.svg";
-import SearchSelected from "../assets/lucide/user-search.svg";
-import CreateSelected from "../assets/lucide/circle-plus.svg";
-import MessagesSelected from "../assets/lucide/message-square.svg";
-import ProfileSelected from "../assets/lucide/user-round.svg";
+import logo from "../assets/logo-189x46.svg";
 
 import { Create } from "../pages/Create.jsx";
 
@@ -33,23 +29,28 @@ export const Header = () => {
   };
   return (
     <div>
-      <nav className="fixed bottom-0 md:top-0 w-full md:w-fit px-4 py-2  border-r md:px-6 md:py-6 border-gray-400 bg-gray-50 flex flex-col justify-between dark:bg-gray-950 dark:text-white dark:border-gray-600">
-        <ul className="flex justify-between md:flex-col md:gap-7">
-          <li>
+      <nav className="fixed bottom-0 md:top-0 w-full md:w-fit   border-r  border-gray-400 bg-gray-50 flex flex-col justify-between dark:bg-gray-950 dark:text-white dark:border-gray-600">
+        <ul className="flex justify-between md:flex-col   ">
+          <li className="hidden xl:inline md:px-6 md:py-4 px-4 py-2 mt-4">
+            <a href="/">
+              <img src={logo} alt="logo" className="w-28" />
+            </a>
+          </li>
+          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2">
             <a href="/" className="flex items-center gap-2">
               <Home />
 
-              <span className="hidden xl:inline">Home</span>
+              <span className="hidden xl:inline ">Home</span>
             </a>
           </li>
-          <li>
+          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2">
             <a href="/search" className="flex items-center gap-2">
               <UserSearch />
 
               <span className="hidden xl:inline">Search</span>
             </a>
           </li>
-          <li>
+          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2">
             <button
               className="flex items-center gap-2 cursor-pointer"
               onClick={() => setToggle(!toggle)}
@@ -58,14 +59,14 @@ export const Header = () => {
               <span className="hidden xl:inline">Create</span>
             </button>
           </li>
-          <li>
+          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2">
             <a href="/messages" className="flex items-center gap-2">
               <MessageSquare />
 
               <span className="hidden xl:inline">Messages</span>
             </a>
           </li>
-          <li>
+          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2">
             <a
               href={`/profile/${user.username}`}
               className="flex items-center gap-2"
@@ -75,11 +76,11 @@ export const Header = () => {
               <span className="hidden xl:inline">Profile</span>
             </a>
           </li>
-          <li>
+          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2">
             <DarkModeToggle svg={MoonIcon} />
           </li>
         </ul>
-        <ul className=" xl:gap-6 hidden md:flex items-center justify-center">
+        <ul className=" xl:gap-6 hidden md:flex items-center justify-center py-2">
           <li className="flex gap-3 items-center">
             <div className="bg-gray-50 rounded-full">
               <img
