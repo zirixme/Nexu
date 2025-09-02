@@ -1,13 +1,26 @@
+import { useSearchParams } from "react-router";
 import { deletePost } from "../api/auth.js";
-import { deleteComment } from "../api/auth.js";
+import { deleteComment, updatePost } from "../api/auth.js";
+import { useState } from "react";
+import { UpdatePost } from "./UpdatePost.jsx";
+
 export const PostOptions = ({
   Close,
   postId,
+  postText,
   onPostDeleted,
   comment,
   commentId,
   onCommentDeleted,
 }) => {
+  const [post, setPost] = useState(postText);
+  const [imageFile, setImageFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [edit, setEdit] = useState(false);
+  const close = () => {
+    setEdit(false);
+  };
   const handleDeleteComment = async () => {
     try {
       await deleteComment(postId, commentId);
@@ -27,16 +40,49 @@ export const PostOptions = ({
       console.log(error);
     }
   };
+
+  const handleUpdatePost = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("text", post);
+    formData.append("image", imageFile);
+
+    try {
+      await updatePost(postId, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      close();
+      Close();
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="fixed inset-0 bg-black/20 z-11 flex justify-center items-center">
       <div className="bg-gray-50 text-black dark:bg-black dark:text-white  rounded flex flex-col max-w-md w-full">
+        {edit && (
+          <UpdatePost
+            post={post}
+            setPost={setPost}
+            close={close}
+            setImageFile={setImageFile}
+            imageFile={imageFile}
+            loading={loading}
+            error={error}
+            handleUpdatePost={handleUpdatePost}
+          />
+        )}
         <button
           className="cursor-pointer hover:bg-gray-200 p-4 transition-all duration-300 text-red-500 font-bold border-b border-gray-300"
           onClick={comment ? handleDeleteComment : handleDeletePost}
         >
           Delete
         </button>
-        <button className="cursor-pointer hover:bg-gray-200 p-4 transition-all duration-300 border-b border-gray-300">
+        <button
+          className="cursor-pointer hover:bg-gray-200 p-4 transition-all duration-300 border-b border-gray-300"
+          onClick={() => setEdit(true)}
+        >
           Edit
         </button>
         <button

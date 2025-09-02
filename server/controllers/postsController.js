@@ -3,29 +3,42 @@ import cloudinary from "../config/cloudinary.js";
 
 export const createPost = async (req, res) => {
   try {
-    const fileBuffer = req.file.buffer;
     const userId = req.user.id;
     const { text } = req.body;
+    const file = req.file;
 
-    const uploadResult = await new Promise((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        { folder: "post-images" },
-        (error, result) => {
-          if (error) return reject(error);
-          resolve(result);
-        }
-      );
-      stream.end(fileBuffer);
-    });
+    if (!text && !file) {
+      return res
+        .status(400)
+        .json({ message: "Post must have text or an image" });
+    }
+
+    let imageUrl = null;
+    let imagePublicId = null;
+
+    if (file) {
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "post-images" },
+          (error, result) => (error ? reject(error) : resolve(result))
+        );
+        stream.end(file.buffer);
+      });
+
+      imageUrl = uploadResult.secure_url;
+      imagePublicId = uploadResult.public_id;
+    }
 
     const newPost = await prisma.post.create({
       data: {
         user_id: userId,
         text,
-        image_url: uploadResult.secure_url,
+        image_url: imageUrl,
+        image_public_id: imagePublicId,
       },
     });
-    res.json({ url: uploadResult.secure_url });
+
+    res.status(201).json(newPost);
   } catch (error) {
     console.error("createPost error:", error);
     res.status(500).json({ message: "Server error" });
@@ -107,32 +120,48 @@ export const updatePost = async (req, res) => {
   try {
     const postId = req.params.id;
     const userId = req.user.id;
-    const { text, image_url } = req.body;
-
+    const { text } = req.body || {};
+    const file = req.file;
     const post = await prisma.post.findUnique({ where: { id: postId } });
 
-    if (!post) {
-      return res.status(404).json({ message: "Post not found" });
-    }
-
-    if (post.user_id !== userId) {
-      return res
-        .status(403)
-        .json({ message: "Not authorized to update this post" });
-    }
-
-    if (!text && !image_url) {
+    if (!post) return res.status(404).json({ message: "Post not found" });
+    if (post.user_id !== userId)
+      return res.status(403).json({ message: "Not authorized" });
+    if (!text && !file)
       return res.status(400).json({ message: "Nothing to update" });
+
+    let newImageUrl = null;
+    let newImagePublicId = null;
+
+    if (file) {
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "post-images" },
+          (error, result) => (error ? reject(error) : resolve(result))
+        );
+        stream.end(file.buffer);
+      });
+
+      newImageUrl = uploadResult.secure_url;
+      newImagePublicId = uploadResult.public_id;
+
+      if (post.image_public_id) {
+        await cloudinary.uploader.destroy(post.image_public_id);
+      }
     }
 
     const updatedPost = await prisma.post.update({
       where: { id: postId },
       data: {
-        ...(text !== undefined && { text }),
-        ...(image_url !== undefined && { image_url }),
+        ...(text ? { text } : {}),
+        ...(newImageUrl
+          ? { image_url: newImageUrl, image_public_id: newImagePublicId }
+          : {}),
+      },
+      include: {
+        comments: true,
       },
     });
-
     res.json(updatedPost);
   } catch (error) {
     console.error("updatePost error:", error);

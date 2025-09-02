@@ -28,7 +28,7 @@ router.get("/:id", getPost);
 
 router.delete("/:id", deletePost);
 
-router.patch("/:id", updatePost);
+router.patch("/:id", upload.single("image"), updatePost);
 
 router.post("/:postId/like", toggleLike);
 

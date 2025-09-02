@@ -15,6 +15,7 @@ export const Profile = () => {
   const [options, setOptions] = useState(false);
   // Modal post state
   const [postId, setPostId] = useState(null);
+  const [postText, setPostText] = useState(null);
   const [post, setPost] = useState(null);
   const [activeCommentsPostId, setActiveCommentsPostId] = useState(null);
 
@@ -98,6 +99,7 @@ export const Profile = () => {
           Close={() => setOptions(false)}
           postId={postId}
           username={username}
+          postText={postText}
           onPostDeleted={onPostDeleted}
         />
       )}
@@ -194,7 +196,10 @@ export const Profile = () => {
               <div
                 key={p.id}
                 className="aspect-square overflow-hidden rounded bg-gray-100 hover:opacity-90 cursor-pointer"
-                onClick={() => setPostId(p.id)}
+                onClick={() => {
+                  setPostId(p.id);
+                  setPostText(p.text);
+                }}
               >
                 <img
                   src={p.image_url || "/fallback.jpg"}
