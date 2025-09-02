@@ -9,17 +9,17 @@ import {
 } from "lucide-react";
 import { DarkModeToggle } from "./DarkModeToggle.jsx";
 import logo from "../assets/logo-189x46.svg";
-
+import { Link, useLocation } from "react-router";
 import { Create } from "../pages/Create.jsx";
 
 import { useState } from "react";
 import { useAuth } from "./AuthContext.jsx";
+
 export const Header = () => {
   const [toggle, setToggle] = useState(false);
   const { signout, user } = useAuth();
-  const [dark, setDark] = useState(
-    () => localStorage.getItem("theme") === "dark"
-  );
+  const location = useLocation();
+
   const handleLogout = async () => {
     try {
       await signout();
@@ -27,60 +27,64 @@ export const Header = () => {
       console.error("Logout failed:", error);
     }
   };
+
+  const linkClasses = (path) =>
+    `md:px-6 md:py-4 px-4 py-2 transition-all flex items-center gap-2 ${
+      location.pathname === path
+        ? "bg-gray-200 dark:bg-gray-800"
+        : "hover:bg-gray-200 dark:hover:bg-gray-800"
+    }`;
+
   return (
     <div>
-      <nav className="fixed bottom-0 md:top-0 w-full md:w-fit   border-r  border-gray-400 bg-gray-50 flex flex-col justify-between dark:bg-gray-950 dark:text-white dark:border-gray-600">
-        <ul className="flex justify-between md:flex-col   ">
+      <nav className="fixed bottom-0 md:top-0 w-full md:w-fit border-r border-gray-400 bg-gray-50 flex flex-col justify-between dark:bg-gray-950 dark:text-white dark:border-gray-600 py-6">
+        <ul className="flex justify-between md:flex-col">
           <li className="hidden xl:inline md:px-6 md:py-4 px-4 py-2 mt-4">
-            <a href="/">
+            <Link to="/">
               <img src={logo} alt="logo" className="w-28" />
-            </a>
+            </Link>
           </li>
-          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2 transition-all">
-            <a href="/" className="flex items-center gap-2">
+          <li>
+            <Link to="/" className={linkClasses("/")}>
               <Home />
-
-              <span className="hidden xl:inline ">Home</span>
-            </a>
+              <span className="hidden xl:inline">Home</span>
+            </Link>
           </li>
-          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2 transition-all">
-            <a href="/search" className="flex items-center gap-2">
+          <li>
+            <Link to="/search" className={linkClasses("/search")}>
               <UserSearch />
-
               <span className="hidden xl:inline">Search</span>
-            </a>
+            </Link>
           </li>
-          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2 transition-all">
+          <li>
             <button
-              className="flex items-center gap-2 cursor-pointer"
+              className="md:px-6 md:py-4 px-4 py-2 transition-all flex items-center gap-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800"
               onClick={() => setToggle(!toggle)}
             >
               <CirclePlus />
               <span className="hidden xl:inline">Create</span>
             </button>
           </li>
-          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2 transition-all">
-            <a href="/messages" className="flex items-center gap-2">
+          <li>
+            <Link to="/messages" className={linkClasses("/messages")}>
               <MessageSquare />
-
               <span className="hidden xl:inline">Messages</span>
-            </a>
+            </Link>
           </li>
-          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2 transition-all">
-            <a
-              href={`/profile/${user.username}`}
-              className="flex items-center gap-2"
+          <li>
+            <Link
+              to={`/profile/${user.username}`}
+              className={linkClasses(`/profile/${user.username}`)}
             >
               <UserRound />
-
               <span className="hidden xl:inline">Profile</span>
-            </a>
+            </Link>
           </li>
-          <li className="hover:bg-gray-200 md:px-6 md:py-4 px-4 py-2 transition-all">
+          <li className="md:px-6 md:py-4 px-4 py-2 transition-all hover:bg-gray-200 dark:hover:bg-gray-800">
             <DarkModeToggle svg={MoonIcon} />
           </li>
         </ul>
-        <ul className=" xl:gap-6 hidden md:flex items-center justify-center py-2 ">
+        <ul className="xl:gap-6 hidden md:flex items-center justify-center md:px-6 md:py-4 px-4 py-2">
           <li className="flex gap-3 items-center">
             <div className="bg-gray-50 rounded-full">
               <img
