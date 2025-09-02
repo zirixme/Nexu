@@ -9,17 +9,20 @@ import {
 } from "lucide-react";
 import { DarkModeToggle } from "./DarkModeToggle.jsx";
 import logo from "../assets/logo-189x46.svg";
+import darkLogo from "../assets/logo-dark.svg";
 import { Link, useLocation } from "react-router";
 import { Create } from "../pages/Create.jsx";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "./AuthContext.jsx";
 
 export const Header = () => {
   const [toggle, setToggle] = useState(false);
   const { signout, user } = useAuth();
   const location = useLocation();
-
+  const [dark, setDark] = useState(
+    () => localStorage.getItem("theme") === "dark"
+  );
   const handleLogout = async () => {
     try {
       await signout();
@@ -41,7 +44,7 @@ export const Header = () => {
         <ul className="flex justify-between md:flex-col">
           <li className="hidden xl:inline md:px-6 md:py-4 px-4 py-2 mt-4">
             <Link to="/">
-              <img src={logo} alt="logo" className="w-28" />
+              <img src={dark ? darkLogo : logo} alt="logo" className="w-28" />
             </Link>
           </li>
           <li>
