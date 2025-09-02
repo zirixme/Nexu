@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router";
 import { deletePost } from "../api/auth.js";
-import { deleteComment, updatePost } from "../api/auth.js";
+import { deleteComment, updatePost, updateComment } from "../api/auth.js";
 import { useState } from "react";
 import { UpdatePost } from "./UpdatePost.jsx";
 
@@ -58,11 +58,24 @@ export const PostOptions = ({
       console.error(error);
     }
   };
+
+  const handleUpdateComment = async (e) => {
+    e.preventDefault();
+    try {
+      await updateComment(commentId, post);
+      close();
+      Close();
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="fixed inset-0 bg-black/20 z-11 flex justify-center items-center">
       <div className="bg-gray-50 text-black dark:bg-black dark:text-white  rounded flex flex-col max-w-md w-full">
         {edit && (
           <UpdatePost
+            comment={comment}
             post={post}
             setPost={setPost}
             close={close}
@@ -71,6 +84,7 @@ export const PostOptions = ({
             loading={loading}
             error={error}
             handleUpdatePost={handleUpdatePost}
+            handleUpdateComment={handleUpdateComment}
           />
         )}
         <button

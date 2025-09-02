@@ -10,6 +10,7 @@ import {
   getComments,
   getPost,
   deleteComment,
+  updateComment,
 } from "../controllers/postsController.js";
 
 import multer from "multer";
@@ -34,6 +35,6 @@ router.post("/:postId/like", toggleLike);
 
 router.post("/:postId/comments", addComment);
 router.get("/:postId/comments", getComments);
-router.delete("/:postId/comments/:commentId", deleteComment);
-
+router.delete("/comments/:commentId", deleteComment);
+router.patch("/comments/:commentId", updateComment);
 export default router;

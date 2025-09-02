@@ -9,6 +9,8 @@ export const UpdatePost = ({
   loading,
   error,
   handleUpdatePost,
+  comment,
+  handleUpdateComment,
 }) => {
   const [preview, setPreview] = useState(null);
 
@@ -29,7 +31,7 @@ export const UpdatePost = ({
         <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 absolute"></div>
       )}
       <form
-        onSubmit={handleUpdatePost}
+        onSubmit={comment ? handleUpdateComment : handleUpdatePost}
         className="bg-gray-50 max-w-md md:max-w-xl flex w-full flex-col items-center p-4 rounded border border-gray-400 gap-4 mx-2 xl:max-w-2xl relative dark:bg-gray-950 dark:text-white"
       >
         <button className="absolute right-4 cursor-pointer " onClick={close}>
@@ -63,6 +65,7 @@ export const UpdatePost = ({
               }}
             />
           </div>
+
           <button
             className="bg-black dark:bg-white dark:text-black text-gray-50 px-6 py-2 rounded"
             type="submit"

@@ -255,7 +255,7 @@ export const getComments = async (req, res) => {
 };
 
 export const deleteComment = async (req, res) => {
-  const { postId, commentId } = req.params;
+  const { commentId } = req.params;
   const userId = req.user.id;
 
   try {
@@ -276,6 +276,37 @@ export const deleteComment = async (req, res) => {
     return res.status(200).json({ message: "Comment deleted successfully" });
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const updateComment = async (req, res) => {
+  const { commentId } = req.params;
+  const { text } = req.body;
+  const userId = req.user.id;
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: commentId,
+      },
+    });
+    if (!comment) {
+      return res.status(404).json({ message: "comment not found" });
+    }
+    if (comment.user_id !== userId) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to delete this comment" });
+    }
+    const updatedComment = await prisma.comment.update({
+      where: { id: commentId },
+      data: {
+        text,
+      },
+    });
+    res.status(200).json(updatedComment);
+  } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Server error" });
   }
 };
