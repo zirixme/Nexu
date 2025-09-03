@@ -11,6 +11,7 @@ import {
   getPost,
   deleteComment,
   updateComment,
+  getFollowingPosts,
 } from "../controllers/postsController.js";
 
 import multer from "multer";
@@ -25,6 +26,7 @@ router.use(protect);
 router.post("/", upload.single("image"), createPost);
 
 router.get("/", getPosts);
+router.get("/following", getFollowingPosts);
 router.get("/:id", getPost);
 
 router.delete("/:id", deletePost);

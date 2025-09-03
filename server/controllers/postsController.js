@@ -310,3 +310,77 @@ export const updateComment = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getFollowingPosts = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    // First, get the list of users that the current user follows
+    const following = await prisma.follow.findMany({
+      where: {
+        follower_id: userId, // Current user is the follower
+      },
+      select: {
+        following_id: true, // Get the IDs of users being followed
+      },
+    });
+
+    // Extract just the user IDs from the following list
+    const followingUserIds = following.map((follow) => follow.following_id);
+
+    // If user isn't following anyone, return empty array
+    if (followingUserIds.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    // Get posts from the users that the current user follows
+    const followingPosts = await prisma.post.findMany({
+      where: {
+        user_id: {
+          in: followingUserIds,
+        },
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            avatar_url: true,
+          },
+        },
+        comments: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                username: true,
+                avatar_url: true,
+              },
+            },
+          },
+          orderBy: {
+            created_at: "desc",
+          },
+        },
+        likes: true,
+      },
+      orderBy: {
+        created_at: "desc",
+      },
+    });
+
+    // Format the response to include counts
+    const postsWithCounts = followingPosts.map((post) => ({
+      ...post,
+      _count: {
+        likes: post.likes.length,
+        comments: post.comments.length,
+      },
+    }));
+
+    res.status(200).json(postsWithCounts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
