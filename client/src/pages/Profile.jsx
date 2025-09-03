@@ -105,7 +105,7 @@ export const Profile = () => {
       )}
       {post && (
         <div className="fixed inset-0 bg-black/20 z-10 backdrop-blur-sm flex items-center justify-center">
-          <div className="max-w-md w-full md:max-w-xl xl:max-w-2xl bg-gray-50 dark:bg-black dark:text-white px-4 py-4 rounded relative">
+          <div className="max-w-md w-full md:max-w-xl xl:max-w-2xl bg-gray-50 dark:bg-black dark:text-white px-4 py-4 rounded relative h-fit overflow-y-auto">
             <button
               className="absolute top-4 right-4 cursor-pointer"
               onClick={() => {

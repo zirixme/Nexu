@@ -11,6 +11,7 @@ export const Post = ({
   setActiveCommentsPostId,
   underline,
 }) => {
+  const [expanded, setExpanded] = useState(false);
   const isCommentsOpen = activeCommentsPostId === post.id;
   const [commentCount, setCommentCount] = useState(post._count.comments);
   return (
@@ -80,7 +81,19 @@ export const Post = ({
       {post.user.username && (
         <div className={`flex gap-4 ${underline ? "mb-4" : "none"}`}>
           <p className="font-bold">{post.user.username}</p>
-          <p>{post.text}</p>
+          <p className="">
+            {expanded || post.text.length <= 50
+              ? post.text
+              : `${post.text.substring(0, 50)}...`}
+            {post.text.length > 50 && (
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="text-gray-400 ml-2 cursor-pointer dark:text-gray-"
+              >
+                {expanded ? "Show less" : "Show more"}
+              </button>
+            )}
+          </p>
         </div>
       )}
     </div>
