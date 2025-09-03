@@ -6,8 +6,6 @@ import { EditProfile } from "../components/EditProfile.jsx";
 import { Post } from "../components/Post.jsx";
 import { useAuth } from "../components/AuthContext.jsx";
 import { PostOptions } from "../components/PostOptions.jsx";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 export const Profile = () => {
   const { username } = useParams();
   const [user, setUser] = useState(null);
@@ -15,7 +13,6 @@ export const Profile = () => {
   const [error, setError] = useState("");
   const [toggleEditProfile, setToggleEditProfile] = useState(false);
   const [options, setOptions] = useState(false);
-  // Modal post state
   const [postId, setPostId] = useState(null);
   const [postText, setPostText] = useState(null);
   const [post, setPost] = useState(null);
@@ -33,7 +30,7 @@ export const Profile = () => {
       setOptions(false);
     }
   };
-  // Fetch user data
+
   useEffect(() => {
     if (!username) return;
 
@@ -46,7 +43,6 @@ export const Profile = () => {
       .finally(() => setLoading(false));
   }, [username]);
 
-  // Fetch single post for modal
   useEffect(() => {
     if (!postId) return;
 
@@ -56,7 +52,7 @@ export const Profile = () => {
       .catch((err) => console.error(err));
   }, [postId]);
 
-  // Follow/unfollow handler
+
   const handleFollow = async () => {
     try {
       const updatedUser = isFollowing
@@ -68,9 +64,8 @@ export const Profile = () => {
     }
   };
 
-  // Toggle like for modal post
+
   const handleToggleLike = (postId, liked, likesCount) => {
-    // just update the single post object
     setPost((prev) =>
       prev && prev.id === postId
         ? {

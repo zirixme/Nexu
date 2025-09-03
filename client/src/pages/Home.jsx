@@ -48,7 +48,6 @@ export const Home = () => {
     if (!accessToken) return;
     const fetchFollowingPosts = async () => {
       try {
-        setLoading(true);
         setError("");
         const res = await getFollowingPosts();
         setFollowingPosts(res.data);

@@ -315,25 +315,21 @@ export const getFollowingPosts = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    // First, get the list of users that the current user follows
     const following = await prisma.follow.findMany({
       where: {
-        follower_id: userId, // Current user is the follower
+        follower_id: userId,
       },
       select: {
-        following_id: true, // Get the IDs of users being followed
+        following_id: true,
       },
     });
 
-    // Extract just the user IDs from the following list
     const followingUserIds = following.map((follow) => follow.following_id);
 
-    // If user isn't following anyone, return empty array
     if (followingUserIds.length === 0) {
       return res.status(200).json([]);
     }
 
-    // Get posts from the users that the current user follows
     const followingPosts = await prisma.post.findMany({
       where: {
         user_id: {
@@ -369,7 +365,6 @@ export const getFollowingPosts = async (req, res) => {
       },
     });
 
-    // Format the response to include counts
     const postsWithCounts = followingPosts.map((post) => ({
       ...post,
       _count: {
