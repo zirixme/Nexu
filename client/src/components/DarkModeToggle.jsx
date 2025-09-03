@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MoonIcon } from "lucide-react";
-export const DarkModeToggle = () => {
+export const DarkModeToggle = ({ newTheme }) => {
   const [dark, setDark] = useState(
     () => localStorage.getItem("theme") === "dark"
   );
@@ -16,7 +16,10 @@ export const DarkModeToggle = () => {
   }, [dark]);
   return (
     <button
-      onClick={() => setDark(!dark)}
+      onClick={() => {
+        setDark(!dark);
+        newTheme(!dark);
+      }}
       className=" text-black dark:text-white flex gap-2 cursor-pointer"
     >
       <MoonIcon />

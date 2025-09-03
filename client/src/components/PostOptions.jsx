@@ -1,4 +1,3 @@
-import { useSearchParams } from "react-router";
 import { deletePost } from "../api/auth.js";
 import { deleteComment, updatePost, updateComment } from "../api/auth.js";
 import { useState } from "react";
@@ -72,7 +71,7 @@ export const PostOptions = ({
   };
   return (
     <div className="fixed inset-0 bg-black/20 z-11 flex justify-center items-center">
-      <div className="bg-gray-50 text-black dark:bg-black dark:text-white  rounded flex flex-col max-w-md w-full">
+      <div className="bg-gray-50 text-black dark:bg-black dark:text-white  rounded flex flex-col max-w-md m-2 w-full">
         {edit && (
           <UpdatePost
             comment={comment}
@@ -88,19 +87,19 @@ export const PostOptions = ({
           />
         )}
         <button
-          className="cursor-pointer hover:bg-gray-200 p-4 transition-all duration-300 text-red-500 font-bold border-b border-gray-300"
+          className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 p-4 transition-all duration-300 text-red-500 font-bold border-b border-gray-300 dark:border-gray-700"
           onClick={comment ? handleDeleteComment : handleDeletePost}
         >
           Delete
         </button>
         <button
-          className="cursor-pointer hover:bg-gray-200 p-4 transition-all duration-300 border-b border-gray-300"
+          className="dark:hover:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-gray-200 p-4 transition-all duration-300 border-b border-gray-300"
           onClick={() => setEdit(true)}
         >
           Edit
         </button>
         <button
-          className="cursor-pointer hover:bg-gray-200 p-4 transition-all duration-300"
+          className="dark:hover:bg-gray-800 cursor-pointer hover:bg-gray-200 p-4 transition-all duration-300"
           onClick={Close}
         >
           Cancel

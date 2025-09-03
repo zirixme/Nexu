@@ -47,7 +47,9 @@ export const Create = ({ onClose }) => {
   return (
     <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-10">
       {error && (
-        <div className="top-5 absolute bg-gray-50 rounded p-4">{error}</div>
+        <div className="top-5 absolute bg-gray-50 dark:bg-gray-900 dark:border rounded p-4">
+          {error}
+        </div>
       )}
       {loading && (
         <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 absolute"></div>

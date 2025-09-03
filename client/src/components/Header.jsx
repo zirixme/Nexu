@@ -13,7 +13,7 @@ import darkLogo from "../assets/logo-dark.svg";
 import { Link, useLocation } from "react-router";
 import { Create } from "../pages/Create.jsx";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "./AuthContext.jsx";
 
 export const Header = () => {
@@ -32,7 +32,7 @@ export const Header = () => {
   };
 
   const linkClasses = (path) =>
-    `md:px-6 md:py-4 px-4 py-2 transition-all flex items-center gap-2 ${
+    `md:px-6 md:py-4 px-6 py-3 transition-all flex items-center gap-2  ${
       location.pathname === path
         ? "bg-gray-200 dark:bg-gray-800"
         : "hover:bg-gray-200 dark:hover:bg-gray-800"
@@ -40,7 +40,7 @@ export const Header = () => {
 
   return (
     <div>
-      <nav className="fixed bottom-0 md:top-0 w-full md:w-fit border-r border-gray-400 bg-gray-50 flex flex-col justify-between dark:bg-gray-950 dark:text-white dark:border-gray-600 py-6">
+      <nav className="fixed bottom-0 md:top-0 w-full md:w-fit border-r border-gray-400 bg-gray-50 flex flex-col justify-between dark:bg-gray-950 dark:text-white dark:border-gray-600 md:py-2">
         <ul className="flex justify-between md:flex-col">
           <li className="hidden xl:inline md:px-6 md:py-4 px-4 py-2 mt-4">
             <Link to="/">
@@ -61,7 +61,7 @@ export const Header = () => {
           </li>
           <li>
             <button
-              className="md:px-6 md:py-4 px-4 py-2 transition-all flex items-center gap-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800"
+              className="md:px-6 md:py-4 px-6 py-3 transition-all flex items-center gap-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 w-full"
               onClick={() => setToggle(!toggle)}
             >
               <CirclePlus />
@@ -83,8 +83,8 @@ export const Header = () => {
               <span className="hidden xl:inline">Profile</span>
             </Link>
           </li>
-          <li className="md:px-6 md:py-4 px-4 py-2 transition-all hover:bg-gray-200 dark:hover:bg-gray-800">
-            <DarkModeToggle svg={MoonIcon} />
+          <li className="md:px-6 md:py-4 px-6 py-3 transition-all hover:bg-gray-200 dark:hover:bg-gray-800">
+            <DarkModeToggle svg={MoonIcon} newTheme={setDark} />
           </li>
         </ul>
         <ul className="xl:gap-6 hidden md:flex items-center justify-center md:px-6 md:py-4 px-4 py-2">
