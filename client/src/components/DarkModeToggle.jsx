@@ -20,7 +20,7 @@ export const DarkModeToggle = ({ newTheme }) => {
         setDark(!dark);
         newTheme(!dark);
       }}
-      className=" text-black dark:text-white flex gap-2 cursor-pointer"
+      className=" text-black dark:text-white flex gap-2 cursor-pointer w-full"
     >
       <MoonIcon />
       <span className="hidden xl:inline">Theme</span>
