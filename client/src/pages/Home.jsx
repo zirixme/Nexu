@@ -73,8 +73,10 @@ export const Home = () => {
     <div className="p-4 flex flex-col max-w-md md:max-w-xl xl:max-w-3xl w-full justify-center dark:bg-gray-950 dark:text-white">
       <ul className="w-full flex justify-center">
         <li
-          className={` dark:hover:bg-gray-800 transition-all duration-300 ${
-            explore ? "border-b-2 font-bold" : "text-gray-400"
+          className={` dark:hover:bg-gray-800 hover:bg-gray-200 transition-all duration-300 ${
+            explore
+              ? "border-b-2 font-bold"
+              : "dark:text-gray-400 text-gray-700"
           }`}
         >
           <button
@@ -88,8 +90,10 @@ export const Home = () => {
           </button>
         </li>
         <li
-          className={`  dark:hover:bg-gray-800 transition-all duration-300 ${
-            following ? "border-b-2 font-bold text-gray-50" : "text-gray-400"
+          className={`  dark:hover:bg-gray-800 hover:bg-gray-200 transition-all duration-300 ${
+            following
+              ? "border-b-2 font-bold dark:text-gray-50"
+              : " dark:text-gray-400 text-gray-700"
           }`}
         >
           <button
