@@ -82,41 +82,10 @@ export const Profile = () => {
     );
   };
 
-  if (loading) {
+  if (loading)
     return (
-      <div className="w-full p-4 md:p-6 max-w-md md:max-w-xl xl:max-w-3xl">
-        {/* Profile skeleton */}
-        <div className="flex justify-between items-start border-b border-gray-400 dark:border-gray-600 pb-4 relative">
-          <div className="space-y-2 w-full">
-            {/* avatar */}
-            <Skeleton circle width={96} height={96} />
-
-            <div className="space-y-2 w-full">
-              <Skeleton width={150} height={20} />
-              <Skeleton width={`60%`} height={15} />
-
-              <div className="flex gap-4">
-                <Skeleton width={70} height={15} />
-                <Skeleton width={70} height={15} />
-                <Skeleton width={70} height={15} />
-              </div>
-            </div>
-          </div>
-          <Skeleton width={30} height={30} />
-        </div>
-
-        {/* Posts skeleton grid */}
-        <div className="mt-6 grid grid-cols-3 gap-2 md:gap-4">
-          {Array(6)
-            .fill()
-            .map((_, i) => (
-              <Skeleton key={i} className="aspect-square w-full h-full" />
-            ))}
-        </div>
-      </div>
+      <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 absolute"></div>
     );
-  }
-
   if (error) return <p className="text-red-500">{error}</p>;
   if (!user) return <p>No user data</p>;
 
