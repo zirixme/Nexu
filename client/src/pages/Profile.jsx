@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { getUser, getPost, followUser, unfollowUser } from "../api/auth.js";
-import { Edit, XIcon, Ellipsis } from "lucide-react";
+import { Edit, XIcon, Ellipsis, MessageSquare } from "lucide-react";
 import { EditProfile } from "../components/EditProfile.jsx";
 import { Post } from "../components/Post.jsx";
 import { useAuth } from "../components/AuthContext.jsx";
@@ -52,7 +52,6 @@ export const Profile = () => {
       .catch((err) => console.error(err));
   }, [postId]);
 
-
   const handleFollow = async () => {
     try {
       const updatedUser = isFollowing
@@ -63,7 +62,6 @@ export const Profile = () => {
       console.log(error);
     }
   };
-
 
   const handleToggleLike = (postId, liked, likesCount) => {
     setPost((prev) =>
@@ -164,12 +162,17 @@ export const Profile = () => {
               </div>
 
               {!isOwnProfile && (
-                <button
-                  className="px-4 py-2 bg-black text-white rounded cursor-pointer transition self-end dark:bg-white dark:text-black"
-                  onClick={handleFollow}
-                >
-                  {isFollowing ? "Unfollow" : "Follow"}
-                </button>
+                <div className="flex gap-4">
+                  <button className="px-4 py-2 bg-black text-white rounded cursor-pointer transition self-end dark:bg-white dark:text-black">
+                    <MessageSquare />
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-black text-white rounded cursor-pointer transition self-end dark:bg-white dark:text-black"
+                    onClick={handleFollow}
+                  >
+                    {isFollowing ? "Unfollow" : "Follow"}
+                  </button>
+                </div>
               )}
             </div>
           </div>

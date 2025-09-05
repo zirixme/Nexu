@@ -2,7 +2,7 @@ import prisma from "../config/prisma.js";
 
 export const getMessages = async (req, res) => {
   const userId = req.user.id;
-  const { otherUserId } = req.params.id;
+  const { otherUserId } = req.params;
   try {
     const messages = await prisma.message.findMany({
       where: {
@@ -31,6 +31,8 @@ export const sendMessage = async (req, res) => {
   if (!receiverId || !text) {
     return res.status(400).json({ message: "Receiver and text is required" });
   }
+  const receiver = await prisma.user.findUnique({ where: { id: receiverId } });
+  if (!receiver) return res.status(404).json({ message: "Receiver not found" });
   try {
     const message = await prisma.message.create({
       data: {
@@ -53,7 +55,6 @@ export const sendMessage = async (req, res) => {
 export const getConversations = async (req, res) => {
   const userId = req.user.id;
   try {
-    // 1. Get messages
     const messages = await prisma.message.findMany({
       where: {
         OR: [{ senderId: userId }, { receiverId: userId }],
@@ -65,7 +66,6 @@ export const getConversations = async (req, res) => {
       },
     });
 
-    // 2. Map last messages per user
     const conversationsMap = new Map();
     messages.forEach((msg) => {
       const otherUser = msg.senderId === userId ? msg.receiver : msg.sender;
@@ -77,27 +77,6 @@ export const getConversations = async (req, res) => {
         });
       }
     });
-
-    // 3. Get following users
-    const following = await prisma.follow.findMany({
-      where: { follower_id: userId },
-      include: {
-        following: { select: { id: true, username: true, avatar_url: true } },
-      },
-    });
-
-    // 4. Merge following into conversations if they aren't already there
-    following.forEach((f) => {
-      const fUser = f.following;
-      if (!conversationsMap.has(fUser.id)) {
-        conversationsMap.set(fUser.id, {
-          ...fUser,
-          lastMessage: null,
-          createdAt: null,
-        });
-      }
-    });
-
     const conversations = Array.from(conversationsMap.values());
     res.json(conversations);
   } catch (error) {

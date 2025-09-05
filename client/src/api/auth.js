@@ -72,7 +72,7 @@ export const updateComment = (id, text) =>
   API.patch(`posts/comments/${id}`, { text });
 
 // Messages
-export const getConversations = (id) => API.get(`/messages/${id}`);
-export const GetChatUsers = () => API.get("/messages");
+export const getConversations = () => API.get(`/messages`);
+export const getMessages = (id) => API.get(`/messages/${id}`);
 export const sendMessage = (receiverId, text) =>
-  API.post("/messages", { receiverId, text });
+  API.post("/messages", { text, receiverId });

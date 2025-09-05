@@ -1,7 +1,7 @@
 import express from "express";
 import { protect } from "../middleware/authMiddleware.js";
 import {
-  getChatUsers,
+  getConversations,
   getMessages,
   sendMessage,
 } from "../controllers/messageController.js";
@@ -9,8 +9,8 @@ import {
 const router = express.Router();
 
 router.use(protect);
-router.get("/", getChatUsers), router.get("/:id", getMessages);
 router.post("/", sendMessage);
-
+router.get("/", getConversations);
+router.get("/:otherUserId", getMessages);
 
 export default router;
