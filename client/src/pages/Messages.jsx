@@ -4,9 +4,14 @@ import { socket } from "../api/socket.js";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "../components/AuthContext.jsx";
 import { getRelativeTime } from "../utils/utils.js";
+import { useLocation } from "react-router";
 export const Messages = () => {
   const messagesEndRef = useRef(null);
   const { user } = useAuth();
+
+  const { state } = useLocation();
+  const selectedUserFromState = state?.selectedUser;
+  const selectedUserId = selectedUserFromState?.id || state?.selectedUserId;
 
   const [conversations, setConversations] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -33,6 +38,34 @@ export const Messages = () => {
     };
     fetchConversations();
   }, []);
+
+  useEffect(() => {
+    if (!selectedUserId) return;
+
+    const fromList = conversations.find((u) => u.id === selectedUserId);
+    if (fromList) {
+      setSelectedUser(fromList);
+      return;
+    }
+
+    if (selectedUserFromState) {
+      setSelectedUser(selectedUserFromState);
+
+      // show it in the sidebar even with no history yet
+      setConversations((prev) =>
+        prev.some((u) => u.id === selectedUserFromState.id)
+          ? prev
+          : [
+              {
+                ...selectedUserFromState,
+                lastMessage: "",
+                createdAt: new Date().toISOString(),
+              },
+              ...prev,
+            ]
+      );
+    }
+  }, [selectedUserId, selectedUserFromState, conversations]);
 
   // Fetch messages when selected user changes
   useEffect(() => {
@@ -98,7 +131,11 @@ export const Messages = () => {
   return (
     <div className="flex w-full h-screen">
       {/* Sidebar */}
-      <div className="w-80 border-r border-gray-400 overflow-y-auto">
+      <div
+        className={`${
+          selectedUser ? "hidden" : ""
+        }md:inline md:w-80 xl:pl-4 border-r border-gray-400 overflow-y-auto`}
+      >
         {conversations.map((user) => (
           <div
             key={user.id}
@@ -130,13 +167,17 @@ export const Messages = () => {
       </div>
 
       {/* Chat panel */}
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 ">
         {!selectedUser ? (
-          <p className="p-4">Select a conversation</p>
+          <p className={`p-4 `}>Select a conversation</p>
         ) : (
           <>
             {/* Header */}
-            <div className="flex gap-6 px-4 py-3 border-b border-gray-300 items-center">
+            <div
+              className={`${
+                selectedUser ? "flex" : "hidden"
+              } flex gap-6 px-4 py-3 border-b border-gray-300 items-center`}
+            >
               <button
                 className="cursor-pointer"
                 onClick={() => setSelectedUser(null)}

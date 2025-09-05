@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { getUser, getPost, followUser, unfollowUser } from "../api/auth.js";
 import { Edit, XIcon, Ellipsis, MessageSquare } from "lucide-react";
 import { EditProfile } from "../components/EditProfile.jsx";
 import { Post } from "../components/Post.jsx";
 import { useAuth } from "../components/AuthContext.jsx";
 import { PostOptions } from "../components/PostOptions.jsx";
+
 export const Profile = () => {
+  const navigate = useNavigate();
   const { username } = useParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -163,7 +165,20 @@ export const Profile = () => {
 
               {!isOwnProfile && (
                 <div className="flex gap-4">
-                  <button className="px-4 py-2 bg-black text-white rounded cursor-pointer transition self-end dark:bg-white dark:text-black">
+                  <button
+                    onClick={() => {
+                      navigate("/messages", {
+                        state: {
+                          selectedUser: {
+                            id: user.id,
+                            username: user.username,
+                            avatar_url: user.avatar_url,
+                          },
+                        },
+                      });
+                    }}
+                    className="px-4 py-2 bg-black text-white rounded cursor-pointer transition self-end dark:bg-white dark:text-black"
+                  >
                     <MessageSquare />
                   </button>
                   <button
