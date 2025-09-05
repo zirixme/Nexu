@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { GetChatUsers, getConversations, sendMessage } from "../api/auth.js";
+import { socket } from "../api/socket.js";
 
 export const Messages = () => {
   const [users, setUsers] = useState([]);
