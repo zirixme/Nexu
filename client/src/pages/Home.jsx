@@ -70,7 +70,7 @@ export const Home = () => {
 
   return (
     <div className="p-4 flex flex-col max-w-md md:max-w-xl xl:max-w-3xl w-full justify-center dark:bg-gray-950 dark:text-white">
-      <ul className="w-full flex justify-center">
+      <ul className="w-full flex justify-center mb-10">
         <li
           className={` dark:hover:bg-gray-800 hover:bg-gray-200 transition-all duration-300 ${
             explore

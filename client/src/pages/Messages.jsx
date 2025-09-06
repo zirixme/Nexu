@@ -199,7 +199,7 @@ export const Messages = () => {
               {messages.map((msg) => (
                 <div
                   key={msg.id}
-                  className={`p-2 rounded max-w-xs bg-gray-200 dark:bg-gray-800 break-words ${
+                  className={`p-2 rounded max-w-3xs md:max-w-xs xl:max-w-xl bg-gray-200 dark:bg-gray-800 break-words ${
                     msg.senderId === user.id
                       ? "self-end bg-blue-200"
                       : "self-start bg-gray-200"

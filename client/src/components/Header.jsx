@@ -32,7 +32,7 @@ export const Header = () => {
   };
 
   const linkClasses = (path) =>
-    `md:px-6 md:py-4 px-6 py-3 transition-all flex items-center gap-2  ${
+    `md:px-6 md:py-4 px-4 py-3 transition-all flex items-center gap-2  ${
       location.pathname === path
         ? "bg-gray-200 dark:bg-gray-800"
         : "hover:bg-gray-200 dark:hover:bg-gray-800"
@@ -83,7 +83,7 @@ export const Header = () => {
               <span className="hidden xl:inline">Profile</span>
             </Link>
           </li>
-          <li className="md:px-6 md:py-4 px-6 py-3 transition-all hover:bg-gray-200 dark:hover:bg-gray-800">
+          <li className="hidden md:inline md:px-6 md:py-4 px-6 py-3 transition-all hover:bg-gray-200 dark:hover:bg-gray-800">
             <DarkModeToggle svg={MoonIcon} newTheme={setDark} />
           </li>
         </ul>
