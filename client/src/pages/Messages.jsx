@@ -7,7 +7,7 @@ import { getRelativeTime } from "../utils/utils.js";
 import { useLocation } from "react-router";
 export const Messages = () => {
   const messagesEndRef = useRef(null);
-  const { user } = useAuth();
+  const { user, onlineUsers } = useAuth();
 
   const { state } = useLocation();
   const selectedUserFromState = state?.selectedUser;
@@ -19,12 +19,10 @@ export const Messages = () => {
   const [text, setText] = useState("");
   const [loadingUsers, setLoadingUsers] = useState(true);
 
-  // Auto-scroll when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Fetch conversations on mount
   useEffect(() => {
     const fetchConversations = async () => {
       try {
@@ -50,8 +48,6 @@ export const Messages = () => {
 
     if (selectedUserFromState) {
       setSelectedUser(selectedUserFromState);
-
-      // show it in the sidebar even with no history yet
       setConversations((prev) =>
         prev.some((u) => u.id === selectedUserFromState.id)
           ? prev
@@ -67,7 +63,6 @@ export const Messages = () => {
     }
   }, [selectedUserId, selectedUserFromState, conversations]);
 
-  // Fetch messages when selected user changes
   useEffect(() => {
     if (!selectedUser) return;
     const fetchUserMessages = async () => {
@@ -81,12 +76,7 @@ export const Messages = () => {
     fetchUserMessages();
   }, [selectedUser]);
 
-  // Socket.IO registration & listener
   useEffect(() => {
-    if (!user) return;
-
-    socket.emit("register", user.id);
-
     socket.on("receive_message", (msg) => {
       if (
         selectedUser &&
@@ -122,41 +112,8 @@ export const Messages = () => {
       text,
     });
 
-    // Add locally for immediate UI feedback
     setText("");
   };
-
-  useEffect(() => {
-    const handleUserStatus = ({ userId, online }) => {
-      setConversations((prev) =>
-        prev.map((u) => (u.id === userId ? { ...u, online } : u))
-      );
-
-      setSelectedUser((prev) =>
-        prev && prev.id === userId ? { ...prev, online } : prev
-      );
-    };
-
-    socket.on("user_status", handleUserStatus);
-
-    return () => {
-      socket.off("user_status", handleUserStatus);
-    };
-  }, []);
-  useEffect(() => {
-    socket.on("online_users", (userIds) => {
-      setConversations((prev) =>
-        prev.map((u) => ({
-          ...u,
-          online: userIds.includes(u.id),
-        }))
-      );
-    });
-
-    return () => {
-      socket.off("online_users");
-    };
-  }, []);
 
   if (loadingUsers) return <p>Loading users...</p>;
 
@@ -185,7 +142,9 @@ export const Messages = () => {
                 />
                 <span
                   className={` w-3 h-3 rounded-full absolute right-2 top-0 ${
-                    user.online ? "bg-green-400" : "bg-gray-400"
+                    onlineUsers.includes(user.id)
+                      ? "bg-green-400"
+                      : "bg-gray-400"
                   } `}
                 ></span>
               </div>

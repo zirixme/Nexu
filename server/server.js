@@ -26,10 +26,13 @@ app.use(cookieParser());
 app.use(express.json());
 
 io.on("connection", (socket) => {
+  // console.log(`✅ Connected: ${socket.id}`);
   socket.on("register", (userId) => {
+    // console.log("register ran");
     onlineUsers.set(userId, socket.id);
     io.emit("user_status", { userId, online: true });
     io.emit("online_users", Array.from(onlineUsers.keys()));
+    // console.log(onlineUsers);
   });
 
   socket.on("send_message", async ({ senderId, receiverId, text }) => {
@@ -69,7 +72,8 @@ io.on("connection", (socket) => {
       io.emit("online_users", Array.from(onlineUsers.keys()));
     }
 
-    console.log("❌ Disconnected:", socket.id);
+    // console.log("❌ Disconnected:", socket.id);
+    // console.log(onlineUsers);
   });
 });
 

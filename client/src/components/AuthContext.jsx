@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { socket } from "../api/socket.js";
 import {
   signin as apiSignIn,
   signout as apiSignOut,
@@ -21,6 +22,30 @@ export const AuthProvider = ({ children }) => {
     username: "",
     avatar_url: null,
   });
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  useEffect(() => {
+    if (!user.id) return;
+
+    if (!socket.connected) socket.connect();
+
+    socket.emit("register", user.id);
+
+    const handleUserStatus = ({ userId, online }) => {
+      setOnlineUsers((prev) => {
+        if (online) {
+          return prev.includes(userId) ? prev : [...prev, userId];
+        } else {
+          return prev.filter((id) => id !== userId);
+        }
+      });
+    };
+
+    socket.on("user_status", handleUserStatus);
+    socket.on("online_users", setOnlineUsers);
+    return () => {
+      socket.off("user_status", handleUserStatus);
+    };
+  }, [user.id]);
 
   useEffect(() => {
     const refresh = async () => {
@@ -34,6 +59,7 @@ export const AuthProvider = ({ children }) => {
           username: res.data.username,
           avatar_url: res.data.avatar_url,
         });
+        socket.emit("register", res.data.id);
       } catch {
         setToken(null);
         setAxiosToken(null);
@@ -58,6 +84,8 @@ export const AuthProvider = ({ children }) => {
         username: res.data.username,
         avatar_url: res.data.avatar_url,
       });
+      socket.connect();
+      socket.emit("register", res.data.id);
     } catch (error) {
       console.error("Signin failed:", error);
       throw error;
@@ -75,6 +103,7 @@ export const AuthProvider = ({ children }) => {
         username: res.data.username,
         avatar_url: res.data.avatar_url,
       });
+      socket.emit("register", res.data.id);
     } catch (error) {
       console.error("Signup failed:", error);
       throw error;
@@ -84,6 +113,7 @@ export const AuthProvider = ({ children }) => {
   const signout = async () => {
     try {
       await apiSignOut();
+      socket.disconnect();
     } finally {
       setToken(null);
       setAxiosToken(null);
@@ -104,6 +134,7 @@ export const AuthProvider = ({ children }) => {
         signout,
         loading,
         setUser,
+        onlineUsers,
       }}
     >
       {loading ? (
