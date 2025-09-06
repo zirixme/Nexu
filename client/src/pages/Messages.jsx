@@ -218,7 +218,7 @@ export const Messages = () => {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="Type a message..."
-                className="flex-1 p-2 border border-gray-400 dark:border-gray-600 rounded"
+                className="flex-1 p-2 border border-gray-400 dark:border-gray-600 rounded outline-0"
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
               />
               <button
