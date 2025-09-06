@@ -59,7 +59,6 @@ export const AuthProvider = ({ children }) => {
           username: res.data.username,
           avatar_url: res.data.avatar_url,
         });
-        socket.emit("register", res.data.id);
       } catch {
         setToken(null);
         setAxiosToken(null);
@@ -85,7 +84,6 @@ export const AuthProvider = ({ children }) => {
         avatar_url: res.data.avatar_url,
       });
       socket.connect();
-      socket.emit("register", res.data.id);
     } catch (error) {
       console.error("Signin failed:", error);
       throw error;
@@ -103,7 +101,6 @@ export const AuthProvider = ({ children }) => {
         username: res.data.username,
         avatar_url: res.data.avatar_url,
       });
-      socket.emit("register", res.data.id);
     } catch (error) {
       console.error("Signup failed:", error);
       throw error;
