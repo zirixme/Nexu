@@ -40,7 +40,7 @@ export const Header = () => {
 
   return (
     <div>
-      <nav className="fixed bottom-0 md:top-0 w-full md:w-fit border-r border-gray-400 bg-gray-50 flex flex-col justify-between dark:bg-gray-950 dark:text-white dark:border-gray-600 md:py-2">
+      <nav className="fixed bottom-0 md:top-0 w-full md:w-fit border-t md:border-t-0 md:border-r border-gray-400 bg-gray-50 flex flex-col justify-between dark:bg-gray-950 dark:text-white dark:border-gray-600 md:py-2">
         <ul className="flex justify-between md:flex-col">
           <li className="hidden xl:inline md:px-6 md:py-4 px-4 py-2 mt-4">
             <Link to="/">

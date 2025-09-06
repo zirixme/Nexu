@@ -212,7 +212,7 @@ export const Messages = () => {
             </div>
 
             {/* Input */}
-            <div className="p-4 border-t border-gray-400 dark:border-gray-600 flex gap-2 pb-15 md:p-4">
+            <div className="p-4 z-12 border-t border-gray-400 dark:border-gray-600 flex gap-2 pb-16 md:p-4">
               <input
                 type="text"
                 value={text}
