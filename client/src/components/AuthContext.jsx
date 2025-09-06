@@ -42,9 +42,6 @@ export const AuthProvider = ({ children }) => {
 
     socket.on("user_status", handleUserStatus);
     socket.on("online_users", setOnlineUsers);
-    return () => {
-      socket.off("user_status", handleUserStatus);
-    };
   }, [user.id]);
 
   useEffect(() => {
