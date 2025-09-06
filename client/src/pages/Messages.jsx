@@ -133,14 +133,14 @@ export const Messages = () => {
       {/* Sidebar */}
       <div
         className={`${
-          selectedUser ? "hidden" : ""
-        }md:inline md:w-80 xl:pl-4 border-r border-gray-400 overflow-y-auto`}
+          selectedUser ? "hidden" : "inline w-full"
+        } md:inline md:w-80 xl:pl-4 border-r border-gray-400 dark:border-gray-600 overflow-y-auto`}
       >
         {conversations.map((user) => (
           <div
             key={user.id}
-            className={`px-4 py-3 hover:bg-gray-200 cursor-pointer ${
-              selectedUser?.id === user.id ? "bg-gray-200" : ""
+            className={`px-4 py-3 hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer ${
+              selectedUser?.id === user.id ? "bg-gray-200 dark:bg-gray-800" : ""
             }`}
             onClick={() => setSelectedUser(user)}
           >
@@ -154,7 +154,9 @@ export const Messages = () => {
                 <span className="font-bold">{user.username}</span>
                 {user.lastMessage && (
                   <span className="text-sm text-gray-400">
-                    {user.lastMessage}
+                    {user.lastMessage.length <= 20
+                      ? user.lastMessage
+                      : user.lastMessage.substring(0, 20) + "..."}
                     <span className="ml-4 text-sm">
                       {"• " + getRelativeTime(user.createdAt)}
                     </span>
@@ -169,14 +171,12 @@ export const Messages = () => {
       {/* Chat panel */}
       <div className="flex flex-col flex-1 ">
         {!selectedUser ? (
-          <p className={`p-4 `}>Select a conversation</p>
+          <p className={`p-4 hidden `}>Select a conversation</p>
         ) : (
           <>
             {/* Header */}
             <div
-              className={`${
-                selectedUser ? "flex" : "hidden"
-              } flex gap-6 px-4 py-3 border-b border-gray-300 items-center`}
+              className={` flex gap-6 px-4 py-3 border-b border-gray-400 dark:border-gray-600 dark: items-center`}
             >
               <button
                 className="cursor-pointer"
@@ -195,11 +195,11 @@ export const Messages = () => {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
+            <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
-                  className={`p-2 rounded max-w-xs bg-gray-200 ${
+                  className={`p-2 rounded max-w-xs bg-gray-200 dark:bg-gray-800 break-words ${
                     msg.senderId === user.id
                       ? "self-end bg-blue-200"
                       : "self-start bg-gray-200"
@@ -212,18 +212,18 @@ export const Messages = () => {
             </div>
 
             {/* Input */}
-            <div className="p-4 border-t border-gray-300 flex gap-2">
+            <div className="p-4 border-t border-gray-400 dark:border-gray-600 flex gap-2 pb-15 md:p-4">
               <input
                 type="text"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="Type a message..."
-                className="flex-1 p-2 border border-gray-300 rounded"
+                className="flex-1 p-2 border border-gray-400 dark:border-gray-600 rounded"
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
               />
               <button
                 onClick={handleSend}
-                className="p-2 bg-black text-white rounded"
+                className="p-2 bg-black dark:bg-white dark:text-black text-white rounded cursor-pointer"
               >
                 Send
               </button>
