@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
   });
   const [onlineUsers, setOnlineUsers] = useState([]);
   useEffect(() => {
-    if (!user.id) return;
+    if (!user) return;
 
     if (!socket.connected) socket.connect();
 
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
 
     socket.on("user_status", handleUserStatus);
     socket.on("online_users", setOnlineUsers);
-  }, [user.id]);
+  }, [user]);
 
   useEffect(() => {
     const refresh = async () => {
