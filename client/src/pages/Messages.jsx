@@ -126,6 +126,38 @@ export const Messages = () => {
     setText("");
   };
 
+  useEffect(() => {
+    const handleUserStatus = ({ userId, online }) => {
+      setConversations((prev) =>
+        prev.map((u) => (u.id === userId ? { ...u, online } : u))
+      );
+
+      setSelectedUser((prev) =>
+        prev && prev.id === userId ? { ...prev, online } : prev
+      );
+    };
+
+    socket.on("user_status", handleUserStatus);
+
+    return () => {
+      socket.off("user_status", handleUserStatus);
+    };
+  }, []);
+  useEffect(() => {
+    socket.on("online_users", (userIds) => {
+      setConversations((prev) =>
+        prev.map((u) => ({
+          ...u,
+          online: userIds.includes(u.id),
+        }))
+      );
+    });
+
+    return () => {
+      socket.off("online_users");
+    };
+  }, []);
+
   if (loadingUsers) return <p>Loading users...</p>;
 
   return (
@@ -145,12 +177,19 @@ export const Messages = () => {
             onClick={() => setSelectedUser(user)}
           >
             <div className="flex gap-2">
-              <img
-                src={user.avatar_url || "/user.svg"}
-                alt={user.username}
-                className="w-10 h-10 rounded-full inline-block mr-2 object-cover"
-              />
-              <div className="flex flex-col">
+              <div className="relative">
+                <img
+                  src={user.avatar_url || "/user.svg"}
+                  alt={user.username}
+                  className="w-10 h-10 rounded-full inline-block mr-2 object-cover"
+                />
+                <span
+                  className={` w-3 h-3 rounded-full absolute right-2 top-0 ${
+                    user.online ? "bg-green-400" : "bg-gray-400"
+                  } `}
+                ></span>
+              </div>
+              <div className="flex flex-col relative">
                 <span className="font-bold">{user.username}</span>
                 {user.lastMessage && (
                   <span className="text-sm text-gray-400">

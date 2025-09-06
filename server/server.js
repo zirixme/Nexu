@@ -26,10 +26,10 @@ app.use(cookieParser());
 app.use(express.json());
 
 io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
-
   socket.on("register", (userId) => {
     onlineUsers.set(userId, socket.id);
+    io.emit("user_status", { userId, online: true });
+    io.emit("online_users", Array.from(onlineUsers.keys()));
   });
 
   socket.on("send_message", async ({ senderId, receiverId, text }) => {
@@ -51,20 +51,25 @@ io.on("connection", (socket) => {
     } catch (err) {
       console.error(err);
     }
-    socket.on("disconnect", () => {
-      onlineUsers.forEach((val, key) => {
-        if (val === socket.id) onlineUsers.delete(key);
-      });
-      console.log("User disconnected:", socket.id);
-    });
   });
 
-  // Handle disconnect
   socket.on("disconnect", () => {
-    onlineUsers.forEach((val, key) => {
-      if (val === socket.id) onlineUsers.delete(key);
-    });
-    console.log("User disconnected:", socket.id);
+    let disconnectedUserId = null;
+
+    for (const [userId, sid] of onlineUsers.entries()) {
+      if (sid === socket.id) {
+        disconnectedUserId = userId;
+        onlineUsers.delete(userId);
+        break;
+      }
+    }
+
+    if (disconnectedUserId) {
+      io.emit("user_status", { userId: disconnectedUserId, online: false });
+      io.emit("online_users", Array.from(onlineUsers.keys()));
+    }
+
+    console.log("❌ Disconnected:", socket.id);
   });
 });
 
