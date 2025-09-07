@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { InputWithLabel } from "../components/InputWithLabel.jsx";
 import { searchUsers } from "../api/auth.js";
 import { formatNumber } from "../utils/utils.js";
+import { PuffLoader } from "react-spinners";
 
 export const Search = () => {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const handleChange = (e) => {
     setQuery(e.target.value);
   };
@@ -45,7 +46,9 @@ export const Search = () => {
         <p className="text-gray-500">No users found</p>
       )}
       {loading && (
-        <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-20 absolute"></div>
+        <div>
+          <PuffLoader color={theme === "dark" ? "#FFFFFF" : "#000000"} />
+        </div>
       )}
       {error && <p className="text-red-500">{error}</p>}
       <ul className="w-full">

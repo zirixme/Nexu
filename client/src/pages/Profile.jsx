@@ -6,6 +6,7 @@ import { EditProfile } from "../components/EditProfile.jsx";
 import { Post } from "../components/Post.jsx";
 import { useAuth } from "../components/AuthContext.jsx";
 import { PostOptions } from "../components/PostOptions.jsx";
+import { BarLoader } from "react-spinners";
 
 export const Profile = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export const Profile = () => {
   const [postText, setPostText] = useState(null);
   const [post, setPost] = useState(null);
   const [activeCommentsPostId, setActiveCommentsPostId] = useState(null);
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
 
   const { user: loggedInUser } = useAuth();
 
@@ -79,7 +81,12 @@ export const Profile = () => {
 
   if (loading)
     return (
-      <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 absolute"></div>
+      <div className="w-full fixed left-0">
+        <BarLoader
+          width={"100%"}
+          color={theme === "dark" ? "#FFFFFF" : "#000000"}
+        />
+      </div>
     );
   if (error) return <p className="text-red-500">{error}</p>;
   if (!user) return <p>No user data</p>;
