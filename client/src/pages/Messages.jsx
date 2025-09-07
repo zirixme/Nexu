@@ -167,7 +167,7 @@ export const Messages = () => {
       </div>
 
       {/* Chat panel */}
-      <div className="flex flex-col flex-1 ">
+      <div className="flex flex-col flex-1 relative">
         {!selectedUser ? (
           <p className={`p-4 hidden `}>Select a conversation</p>
         ) : (
@@ -210,7 +210,7 @@ export const Messages = () => {
             </div>
 
             {/* Input */}
-            <div className="p-4 z-12 border-t border-gray-400 dark:border-gray-600 flex gap-2 pb-16 md:p-4">
+            <div className="p-4 z-12 border-t border-gray-400 dark:border-gray-600 flex gap-2 md:p-4 fixed bottom-0 w-full bg-gray-50">
               <input
                 type="text"
                 value={text}
