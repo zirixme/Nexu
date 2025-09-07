@@ -39,7 +39,7 @@ export const Home = () => {
         setError("Failed to load posts.");
         console.error("Fetch posts error:", error);
       } finally {
-        // setLoading(false);
+        setLoading(false);
       }
     };
 
@@ -57,7 +57,7 @@ export const Home = () => {
         setError("Failed to load posts.");
         console.error("Fetch posts error:", error);
       } finally {
-        // setLoading(false);
+        setLoading(false);
       }
     };
     fetchFollowingPosts();
