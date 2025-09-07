@@ -6,3 +6,6 @@
 * {
   font-family: Inter;
 }
+.safe-area {
+  padding-bottom: env(safe-area-inset-bottom);
+}
