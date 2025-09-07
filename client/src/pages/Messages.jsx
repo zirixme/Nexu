@@ -193,7 +193,7 @@ export const Messages = () => {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+            <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4 mb-17">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
