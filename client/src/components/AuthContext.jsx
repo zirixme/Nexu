@@ -10,7 +10,7 @@ import {
   setAccessToken as setAxiosToken,
   getAccessToken,
 } from "../api/authToken.js";
-
+import { BarLoader } from "react-spinners";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -132,7 +132,9 @@ export const AuthProvider = ({ children }) => {
       }}
     >
       {loading ? (
-        <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 left-2/4 absolute"></div>
+        <div className="flex w-full justify-center items-center">
+          <BarLoader width={"100%"} />
+        </div>
       ) : (
         children
       )}

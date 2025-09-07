@@ -6,7 +6,7 @@ import { InputWithLabel } from "../components/InputWithLabel.jsx";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../components/AuthContext.jsx";
-
+import { PuffLoader } from "react-spinners";
 export const SignUp = () => {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
   const [error, setError] = useState("");
@@ -33,10 +33,7 @@ export const SignUp = () => {
       setLoading(false);
     }
   };
-  if (loading)
-    return (
-      <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 absolute"></div>
-    );
+
   return (
     <main className="bg-gray-50 min-h-screen flex flex-col xl:flex-row items-center justify-center">
       <div className="space-y-8 flex flex-col items-center p-2 w-full max-w-md md:max-w-2xl xl:max-w-md px-4">
@@ -75,8 +72,8 @@ export const SignUp = () => {
             onChange={handleChange}
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <button className="w-full px-4 py-2 bg-black rounded text-white hover:cursor-pointer">
-            Sign Up
+          <button className="w-full px-4 py-2 bg-black rounded text-white hover:cursor-pointer flex justify-center items-center gap-2">
+            Sign Up {loading ? <PuffLoader size={24} color="#FFFFFF" /> : ""}
           </button>
         </form>
         <div className="flex flex-col w-full max-w-md md:max-w-2xl xl:max-w-md justify-center items-center gap-12">

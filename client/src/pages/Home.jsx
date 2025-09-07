@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getPosts, getFollowingPosts } from "../api/auth.js";
 import { Post } from "../components/Post.jsx";
 import { useAuth } from "../components/AuthContext.jsx";
+import { BarLoader } from "react-spinners";
 export const Home = () => {
   const [posts, setPosts] = useState([]);
   const [followingPosts, setFollowingPosts] = useState([]);
@@ -11,6 +12,7 @@ export const Home = () => {
   const [following, setFollowing] = useState(false);
   const [explore, setExplore] = useState(true);
   const { accessToken } = useAuth();
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const handleToggleLike = (postId, liked, likesCount) => {
     setPosts((posts) =>
       posts.map((post) =>
@@ -37,7 +39,7 @@ export const Home = () => {
         setError("Failed to load posts.");
         console.error("Fetch posts error:", error);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 
@@ -55,7 +57,7 @@ export const Home = () => {
         setError("Failed to load posts.");
         console.error("Fetch posts error:", error);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
     fetchFollowingPosts();
@@ -63,7 +65,12 @@ export const Home = () => {
 
   if (loading)
     return (
-      <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 absolute "></div>
+      <div className="w-full fixed left-0">
+        <BarLoader
+          width={"100%"}
+          color={theme === "dark" ? "#FFFFFF" : "#000000"}
+        />
+      </div>
     );
   if (error) return <p className="text-red-600">{error}</p>;
   if (!posts.length) return <p>No posts available.</p>;
