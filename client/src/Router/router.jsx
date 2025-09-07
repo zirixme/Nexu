@@ -1,15 +1,15 @@
 import { createBrowserRouter } from "react-router";
 import { Home } from "../pages/Home.jsx";
 import { SignIn } from "../pages/SignIn.jsx";
-import { SignUp } from "../pages/SignUp.jsx";
+import { SignUp } from "../pages/Signup.jsx";
 import { RequireAuth } from "../components/RequireAuth.jsx";
-import { Header } from "../components/Header.jsx";
 import { Layout } from "../layout/Layout.jsx";
 import { Search } from "../pages/Search.jsx";
 import { Create } from "../pages/Create.jsx";
 import { Messages } from "../pages/Messages.jsx";
 import { Profile } from "../pages/Profile.jsx";
 import { Signout } from "../pages/Signout.jsx";
+import { PublicRoute } from "../components/PublicRoute.jsx";
 let router = createBrowserRouter([
   {
     path: "/",
@@ -28,15 +28,27 @@ let router = createBrowserRouter([
   },
   {
     path: "/signin",
-    element: <SignIn />,
+    element: (
+      <PublicRoute>
+        <SignIn />
+      </PublicRoute>
+    ),
   },
   {
     path: "/signup",
-    element: <SignUp />,
+    element: (
+      <PublicRoute>
+        <SignUp />
+      </PublicRoute>
+    ),
   },
   {
     path: "/signout",
-    element: <Signout />,
+    element: (
+      <RequireAuth>
+        <Signout />
+      </RequireAuth>
+    ),
   },
 ]);
 
