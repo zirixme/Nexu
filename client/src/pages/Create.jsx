@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { XIcon, ImageIcon } from "lucide-react";
 import { createPost } from "../api/auth.js";
 import { getPosts } from "../api/auth.js";
+import { PuffLoader } from "react-spinners";
 export const Create = ({ onClose }) => {
   const [post, setPost] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [preview, setPreview] = useState(null);
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
 
   useEffect(() => {
     if (!imageFile) return;
@@ -52,7 +54,9 @@ export const Create = ({ onClose }) => {
         </div>
       )}
       {loading && (
-        <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin top-5 absolute"></div>
+        <div className="absolute top-4 right-3/6">
+          <PuffLoader color={theme === "dark" ? "#FFFFFF" : "#000000"} />
+        </div>
       )}
       <form
         method="POST"
