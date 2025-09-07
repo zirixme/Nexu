@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { useAuth } from "../components/AuthContext.jsx";
 import { getRelativeTime } from "../utils/utils.js";
 import { useLocation } from "react-router";
+import { PuffLoader } from "react-spinners";
 export const Messages = () => {
   const messagesEndRef = useRef(null);
   const { user, onlineUsers } = useAuth();
@@ -115,7 +116,12 @@ export const Messages = () => {
     setText("");
   };
 
-  if (loadingUsers) return <p>Loading users...</p>;
+  if (loadingUsers)
+    return (
+      <div className="absolute top-4 right-4">
+        <PuffLoader size={24} color="#000000" />
+      </div>
+    );
 
   return (
     <div className="flex w-full h-screen">
