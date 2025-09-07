@@ -145,7 +145,7 @@ export const Profile = () => {
           <div className="space-y-2 w-full">
             <h1 className="font-bold text-xl">{user.username}</h1>
             <p>{user.bio}</p>
-            <div className="flex justify-between w-full items-center">
+            <div className="flex justify-between w-full items-center flex-wrap gap-4">
               <div className="flex gap-4">
                 <p>
                   {user.followers.length}{" "}
@@ -164,7 +164,7 @@ export const Profile = () => {
               </div>
 
               {!isOwnProfile && (
-                <div className="flex gap-4">
+                <div className="flex gap-2 md:gap-4">
                   <button
                     onClick={() => {
                       navigate("/messages", {
@@ -177,7 +177,7 @@ export const Profile = () => {
                         },
                       });
                     }}
-                    className="px-4 py-2 bg-black text-white rounded cursor-pointer transition self-end dark:bg-white dark:text-black"
+                    className="p-2 md:px-4 md:py-2 bg-black text-white rounded cursor-pointer transition self-end dark:bg-white dark:text-black"
                   >
                     <MessageSquare />
                   </button>

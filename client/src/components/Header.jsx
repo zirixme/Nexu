@@ -32,7 +32,7 @@ export const Header = () => {
   };
 
   const linkClasses = (path) =>
-    `md:px-6 md:py-4 px-4 py-3 transition-all flex items-center gap-2  ${
+    `md:px-6 md:py-4  px-4 py-6 transition-all flex items-center  ${
       location.pathname === path
         ? "bg-gray-200 dark:bg-gray-800"
         : "hover:bg-gray-200 dark:hover:bg-gray-800"
@@ -61,7 +61,7 @@ export const Header = () => {
           </li>
           <li>
             <button
-              className="md:px-6 md:py-4 px-6 py-3 transition-all flex items-center gap-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 w-full"
+              className="md:px-6 md:py-4 px-6 py-6 transition-all flex items-center gap-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 w-full"
               onClick={() => setToggle(!toggle)}
             >
               <CirclePlus />
