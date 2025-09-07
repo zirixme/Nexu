@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
   });
   const [onlineUsers, setOnlineUsers] = useState([]);
   useEffect(() => {
-    if (!user) return;
+    if (!user.id) return;
 
     if (!socket.connected) socket.connect();
 
