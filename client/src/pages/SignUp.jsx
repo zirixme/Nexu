@@ -24,8 +24,9 @@ export const SignUp = () => {
     setError("");
     try {
       setLoading(true);
-      await signup(form);
-      navigate("/");
+      const newUser = await signup(form);
+      console.log(newUser);
+      if (newUser) navigate("/");
     } catch (error) {
       console.error("Signup failed:", error);
       setError(error.response?.data?.message || "Signup failed");
@@ -33,6 +34,8 @@ export const SignUp = () => {
       setLoading(false);
     }
   };
+
+  if (loading) <p>Loading...</p>;
 
   return (
     <main className="bg-gray-50 min-h-screen flex flex-col xl:flex-row items-center justify-center">

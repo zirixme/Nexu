@@ -57,7 +57,14 @@ export const signup = async (req, res) => {
       sameSite: isDev ? "lax" : "None",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-    res.status(201).json({ accessToken, id: newUser.id });
+    res
+      .status(201)
+      .json({
+        accessToken,
+        id: newUser.id,
+        username: newUser.username,
+        avatar_url: newUser.avatar_url,
+      });
   } catch (error) {
     console.error("signup error:", error);
     res.status(500).json({ message: "Server error" });

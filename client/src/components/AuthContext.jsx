@@ -92,12 +92,14 @@ export const AuthProvider = ({ children }) => {
       const res = await apiSignUp(credentials);
       setToken(res.data.accessToken);
       setAxiosToken(res.data.accessToken);
-      setIsLoggedIn(true);
-      setUser({
+      const newUser = {
         id: res.data.id,
         username: res.data.username,
         avatar_url: res.data.avatar_url,
-      });
+      };
+      setUser(newUser);
+      setIsLoggedIn(true);
+      return newUser;
     } catch (error) {
       console.error("Signup failed:", error);
       throw error;
