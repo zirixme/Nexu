@@ -32,7 +32,7 @@ export const Header = () => {
   };
 
   const linkClasses = (path) =>
-    `md:px-6 md:py-4  px-4 py-6 transition-all flex items-center  ${
+    `md:px-6 md:py-4  px-4 py-6 transition-all flex items-center gap-2  ${
       location.pathname === path
         ? "bg-gray-200 dark:bg-gray-800"
         : "hover:bg-gray-200 dark:hover:bg-gray-800"
