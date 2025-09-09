@@ -66,16 +66,39 @@ export const Messages = () => {
 
   useEffect(() => {
     if (!selectedUser) return;
+
     const fetchUserMessages = async () => {
       try {
         const res = await getMessages(selectedUser.id);
         setMessages(res.data);
+
+        const unreadIds = res.data
+          .filter((m) => m.receiverId === user.id && !m.read)
+          .map((m) => m.id);
+
+        if (unreadIds.length > 0) {
+          socket.emit("seen-message", { messageIds: unreadIds });
+        }
       } catch (err) {
         console.error(err);
       }
     };
     fetchUserMessages();
-  }, [selectedUser]);
+  }, [selectedUser, user.id]);
+
+  useEffect(() => {
+    socket.on("message-seen", ({ messages }) => {
+      setMessages((prev) =>
+        prev.map((m) =>
+          messages.some((seen) => seen.id === m.id) ? { ...m, read: true } : m
+        )
+      );
+    });
+
+    return () => {
+      socket.off("message-seen");
+    };
+  }, []);
 
   useEffect(() => {
     socket.on("receive_message", (msg) => {

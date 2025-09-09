@@ -35,6 +35,14 @@ io.on("connection", (socket) => {
     // console.log(onlineUsers);
   });
 
+  // socket.on("seen-message", async (messageId) => {
+  //   const msg = await prisma.message.updateMany({
+  //     where: { id: { in: messageId } },
+  //     data: { read: true },
+  //   });
+  //   io.to(msg.senderId.toString()).emit("message-seen", msg.id);
+  // });
+
   socket.on("send_message", async ({ senderId, receiverId, text }) => {
     try {
       const message = await prisma.message.create({
