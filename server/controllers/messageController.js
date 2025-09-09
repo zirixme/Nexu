@@ -89,7 +89,6 @@ export const getChatUsers = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    // 1. All users you've chatted with
     const messages = await prisma.message.findMany({
       where: { OR: [{ senderId: userId }, { receiverId: userId }] },
       include: {
@@ -99,7 +98,6 @@ export const getChatUsers = async (req, res) => {
       orderBy: { createdAt: "desc" },
     });
 
-    // 2. Users you follow
     const following = await prisma.follow.findMany({
       where: { follower_id: userId },
       include: {
@@ -107,7 +105,6 @@ export const getChatUsers = async (req, res) => {
       },
     });
 
-    // 3. Users who follow you
     const followers = await prisma.follow.findMany({
       where: { following_id: userId },
       include: {
@@ -115,7 +112,6 @@ export const getChatUsers = async (req, res) => {
       },
     });
 
-    // 4. Merge into a single map to deduplicate
     const usersMap = {};
 
     messages.forEach((msg) => {

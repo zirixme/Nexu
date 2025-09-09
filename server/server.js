@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
 import { createServer } from "node:http";
 import prisma from "./config/prisma.js";
+
 // routes imports //
 import authRoutes from "./routes/authRoutes.js";
 import postsRoutes from "./routes/postsRoutes.js";
@@ -18,30 +19,19 @@ const io = new Server(server, {
   cors: { origin: process.env.FRONTEND_URL, credentials: true },
 });
 
-const onlineUsers = new Map();
-
 // middleware //
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 
+const onlineUsers = new Map();
+
 io.on("connection", (socket) => {
-  // console.log(`✅ Connected: ${socket.id}`);
   socket.on("register", (userId) => {
-    // console.log("register ran");
     onlineUsers.set(userId, socket.id);
     io.emit("user_status", { userId, online: true });
     io.emit("online_users", Array.from(onlineUsers.keys()));
-    // console.log(onlineUsers);
   });
-
-  // socket.on("seen-message", async (messageId) => {
-  //   const msg = await prisma.message.updateMany({
-  //     where: { id: { in: messageId } },
-  //     data: { read: true },
-  //   });
-  //   io.to(msg.senderId.toString()).emit("message-seen", msg.id);
-  // });
 
   socket.on("send_message", async ({ senderId, receiverId, text }) => {
     try {
@@ -79,9 +69,6 @@ io.on("connection", (socket) => {
       io.emit("user_status", { userId: disconnectedUserId, online: false });
       io.emit("online_users", Array.from(onlineUsers.keys()));
     }
-
-    // console.log("❌ Disconnected:", socket.id);
-    // console.log(onlineUsers);
   });
 });
 

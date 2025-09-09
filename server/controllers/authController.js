@@ -36,13 +36,9 @@ export const signup = async (req, res) => {
       },
     });
 
-    //const token = generateToken(newUser.id);
     const accessToken = generateAccessToken(newUser.id);
     const refreshToken = generateRefreshToken(newUser.id);
-    // res.status(201).json({
-    //   id: newUser.id,
-    //   token,
-    // });
+
     await prisma.refreshToken.create({
       data: {
         token: refreshToken,
@@ -57,14 +53,12 @@ export const signup = async (req, res) => {
       sameSite: isDev ? "lax" : "None",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-    res
-      .status(201)
-      .json({
-        accessToken,
-        id: newUser.id,
-        username: newUser.username,
-        avatar_url: newUser.avatar_url,
-      });
+    res.status(201).json({
+      accessToken,
+      id: newUser.id,
+      username: newUser.username,
+      avatar_url: newUser.avatar_url,
+    });
   } catch (error) {
     console.error("signup error:", error);
     res.status(500).json({ message: "Server error" });
@@ -91,13 +85,6 @@ export const signin = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // const token = generateToken(user.id);
-    // res.json({
-    //   id: user.id,
-    //   username: user.username,
-    //   token,
-    //   avatar_url: user.avatar_url,
-    // });
     const accessToken = generateAccessToken(user.id);
     const refreshToken = generateRefreshToken(user.id);
 
