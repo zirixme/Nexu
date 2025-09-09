@@ -6,9 +6,6 @@ import { InputWithLabel } from "../components/InputWithLabel.jsx";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../components/AuthContext.jsx";
-import { Canvas } from "@react-three/fiber";
-import { Logo3D } from "../components/Logo3D.jsx";
-import { OrbitControls } from "@react-three/drei";
 import { PuffLoader } from "react-spinners";
 export const SignIn = () => {
   const [form, setForm] = useState({ username: "", password: "" });
@@ -105,14 +102,7 @@ export const SignIn = () => {
         </div>
       </div>
 
-      <div className="hidden xl:flex w-full h-screen items-center justify-center bg-black">
-        {/* <Canvas>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[5, 5, 5]} />
-          <Logo3D modelPath="/Nexu-Logo.glb" />
-          <OrbitControls enableZoom={false} enablePan={false} />
-        </Canvas> */}
-      </div>
+      <div className="hidden xl:flex w-full h-screen items-center justify-center bg-black"></div>
     </main>
   );
 };

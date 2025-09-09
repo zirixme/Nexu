@@ -30,7 +30,6 @@ API.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${res.data.accessToken}`;
         return API(originalRequest);
       } catch {
-        // refresh failed → clear token
         setAccessToken(null);
         return Promise.reject(error);
       }
